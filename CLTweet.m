@@ -26,41 +26,41 @@
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"eee MMM dd HH:mm:ss ZZZZ yyyy"];
-    return [formatter dateFromString:[_dictionary objectForKey:CLTWEET_TIMESTAMP]];
+    return [formatter dateFromString:[_dictionary objectForKey:CLTWITTER_TWEET_TIMESTAMP]];
 }
 
 - (NSString *)dateString
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"eee MMM dd HH:mm:ss ZZZZ yyyy"];
-    return [formatter stringFromDate:[formatter dateFromString:[_dictionary objectForKey:CLTWEET_TIMESTAMP]]];
+    return [formatter stringFromDate:[formatter dateFromString:[_dictionary objectForKey:CLTWITTER_TWEET_TIMESTAMP]]];
 }
 
 - (CLTwitterUser *)user
 {
-    return [[CLTwitterUser alloc] initWithDictionary:[_dictionary objectForKey:CLTWEET_USER]];
+    return [[CLTwitterUser alloc] initWithDictionary:[_dictionary objectForKey:CLTWITTER_TWEET_USER]];
 }
 
 - (void)setText:(NSString *)text
 {
-    [_dictionary setValue:text forKey:CLTWEET_BODY];
+    [_dictionary setValue:text forKey:CLTWITTER_TWEET_BODY];
 }
 
 - (BOOL)isReply
 {
-    return [_dictionary objectForKey:CLTWEET_IN_REPLY_TO_ID] != [NSNull null];
+    return [_dictionary objectForKey:CLTWITTER_TWEET_IN_REPLY_TO_ID] != [NSNull null];
 }
 
 - (NSNumber *)tweetId
 {
-    return [_dictionary objectForKey:CLTWEET_ID];
+    return [_dictionary objectForKey:CLTWITTER_TWEET_ID];
 }
 
 - (CLTweetMedia *)media
 {
     if (_media == nil)
     {
-        _media = [[CLTweetMedia alloc] initWithParent:self data:[_dictionary objectForKey:CLTWEET_MEDIA]];
+        _media = [[CLTweetMedia alloc] initWithParent:self data:[_dictionary objectForKey:CLTWITTER_TWEET_MEDIA]];
     }
     
     return _media;
@@ -101,7 +101,7 @@
 {
     if ([self isReply])
     {
-        [CLTweet getTweetWithId:[_dictionary objectForKey:CLTWEET_IN_REPLY_TO_ID] completionHandler:handler];
+        [CLTweet getTweetWithId:[_dictionary objectForKey:CLTWITTER_TWEET_IN_REPLY_TO_ID] completionHandler:handler];
     }
     else
     {
@@ -122,14 +122,14 @@
 
 - (BOOL)isRetweet
 {
-    return [_dictionary objectForKey:CLTWEET_RETWEETED_TWEET] != nil;
+    return [_dictionary objectForKey:CLTWITTER_TWEET_RETWEETED_TWEET] != nil;
 }
 
 - (CLTweet *)retweetedTweet
 {
     if ([self isRetweet])
     {
-        return [[CLTweet alloc] initWithDictionary:[_dictionary objectForKey:CLTWEET_RETWEETED_TWEET]];
+        return [[CLTweet alloc] initWithDictionary:[_dictionary objectForKey:CLTWITTER_TWEET_RETWEETED_TWEET]];
     }
     else
     {
@@ -163,7 +163,7 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"]]; 
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[[[NSDictionary dictionaryWithObjectsAndKeys:text, CLTWEET_UPDATE_STATUS, nil] urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:[[[NSDictionary dictionaryWithObjectsAndKeys:text, CLTWITTER_TWEET_UPDATE_STATUS, nil] urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
     
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];

@@ -19,12 +19,12 @@
 
 - (NSArray *)hashTags
 {
-    return [_dictionary objectForKey:CLTWEET_MEDIA_HASHTAGS];
+    return [_dictionary objectForKey:CLTWITTER_TWEET_MEDIA_HASHTAGS];
 }
 
 - (NSArray *)urls
 {
-    return [_dictionary objectForKey:CLTWEET_MEDIA_URLS];
+    return [_dictionary objectForKey:CLTWITTER_TWEET_MEDIA_URLS];
 }
 
 - (BOOL)hasUrls
@@ -34,7 +34,7 @@
 
 - (NSArray *)mentions
 {
-    return [_dictionary objectForKey:CLTWEET_MEDIA_MENTIONS];
+    return [_dictionary objectForKey:CLTWITTER_TWEET_MEDIA_MENTIONS];
 }
 
 #pragma mark -
@@ -65,8 +65,8 @@
     NSMutableString *retVal = [[[self parent] text] mutableCopy];
     for (NSDictionary *url in [self urls])
     {
-        [retVal replaceOccurrencesOfString:[url objectForKey:CLTWEET_MEDIA_URL_URL]
-                                withString:[url objectForKey:CLTWEET_MEDIA_URL_DISPLAY]
+        [retVal replaceOccurrencesOfString:[url objectForKey:CLTWITTER_TWEET_MEDIA_URL_URL]
+                                withString:[url objectForKey:CLTWITTER_TWEET_MEDIA_DISPLAY_URL]
                                    options:NSLiteralSearch
                                      range:NSMakeRange(0, [retVal length])];
     }
