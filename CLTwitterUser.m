@@ -108,7 +108,7 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)getFollowersAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserArrayHandler)handler;
+- (void)getFollowersAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
 {
     if (nil == cursor)
     {
@@ -126,32 +126,24 @@
         }
         else
         {
-            NSMutableArray *retVal = [[NSMutableArray alloc] init];
             NSDictionary *dict = [[CLTwitterEngine sharedEngine] convertJSON:data];
             NSArray *list = [dict valueForKey:CLTWITTER_USER_LIST_IDS];
-            dispatch_group_t fetchGroup = dispatch_group_create();
-            for (int i = 0; i < min([list count], 100); ++i)
-            {
-                dispatch_group_enter(fetchGroup);
-                [CLTwitterUser getUserWithId:[list objectAtIndex:i] completionHandler:^(CLTwitterUser *user, NSError *error) {
-                    if (user != nil)
-                    {
-                        [retVal addObject:user];
-                    }
-                    dispatch_group_leave(fetchGroup);
-                }];
-            }
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dispatch_group_wait(fetchGroup, DISPATCH_TIME_FOREVER);
-                dispatch_release(fetchGroup);
-                handler(retVal, [dict objectForKey:CLTWITTER_USER_NEXT_CURSOR], nil);
-            });
+            NSString *csv = [[list subarrayWithRange:NSMakeRange(0, min([list count], 100))] componentsJoinedByString:@","];
+            [CLTwitterUser getUsersWithIds:csv completionHandler:^(NSArray *users, NSError *error) {
+                if (error == nil)
+                {
+                    handler(users, [dict objectForKey:CLTWITTER_USER_NEXT_CURSOR], nil);
+                }
+                else
+                {
+                    handler(nil, nil, error);
+                }
+            }];
         }
     }];
 }
 
-- (void)getFollowingAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserArrayHandler)handler;
+- (void)getFollowingAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
 {
     if (nil == cursor)
     {
@@ -169,27 +161,20 @@
         }
         else
         {
-            NSMutableArray *retVal = [[NSMutableArray alloc] init];
             NSDictionary *dict = [[CLTwitterEngine sharedEngine] convertJSON:data];
             NSArray *list = [dict valueForKey:CLTWITTER_USER_LIST_IDS];
-            dispatch_group_t fetchGroup = dispatch_group_create();
-            for (int i = 0; i < min([list count], 100); ++i)
-            {
-                dispatch_group_enter(fetchGroup);
-                [CLTwitterUser getUserWithId:[list objectAtIndex:i] completionHandler:^(CLTwitterUser *user, NSError *error) {
-                    if (user != nil)
-                    {
-                        [retVal addObject:user];
-                    }
-                    dispatch_group_leave(fetchGroup);
-                }];
-            }
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dispatch_group_wait(fetchGroup, DISPATCH_TIME_FOREVER);
-                dispatch_release(fetchGroup);
-                handler(retVal, [dict objectForKey:CLTWITTER_USER_NEXT_CURSOR], nil);
-            });
+            NSString *csv = [[list subarrayWithRange:NSMakeRange(0, min([list count], 100))] componentsJoinedByString:@","];
+            [CLTwitterUser getUsersWithIds:csv completionHandler:^(NSArray *users, NSError *error) {
+                if (error == nil)
+                {
+                    handler(users, [dict objectForKey:CLTWITTER_USER_NEXT_CURSOR], nil);
+                }
+                else
+                {
+                    handler(nil, nil, error);
+                }
+            }];
         }
     }];
 }
@@ -227,6 +212,30 @@
         else
         {
             handler([[CLTwitterUser alloc] initWithJSONData:data], error);
+        }
+    }];
+}
+
++ (void)getUsersWithIds:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler
+{
+    NSString *urlString = [NSString stringWithFormat:@"https://api.twitter.com/1/users/lookup.json?user_id=%@&include_entities=true", usersCsv];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
+    NSLog(@"Fetcher URL: %@", [[fetcher mutableRequest] URL]);
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        if (error != nil)
+        {
+            handler(nil, error);
+        }
+        else
+        {
+            NSArray *array = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:[array count]];
+            for (NSDictionary *dictionary in array)
+            {
+                [retVal addObject:[[CLTwitterUser alloc] initWithDictionary:dictionary]];
+            }
+            handler(retVal, nil);
         }
     }];
 }

@@ -11,7 +11,8 @@
 @class CLTwitterUser;
 
 typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
-typedef void(^CLUserArrayHandler)(NSArray *users, NSNumber *nextBatchCursor, NSError *error);
+typedef void(^CLUserCursoredArrayHandler)(NSArray *users, NSNumber *nextBatchCursor, NSError *error);
+typedef void(^CLUserArrayHandler)(NSArray *users, NSError *error);
 
 @interface CLTwitterUser : NSObject
 {
@@ -32,10 +33,11 @@ typedef void(^CLUserArrayHandler)(NSArray *users, NSNumber *nextBatchCursor, NSE
 @property (readonly) NSNumber *followerCount;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
-- (void)getFollowersAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserArrayHandler)handler;
-- (void)getFollowingAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserArrayHandler)handler;
+- (void)getFollowersAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
+- (void)getFollowingAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
 
 + (void)getUserWithScreenName:(NSString *)screenName completionHandler:(CLUserHandler)handler;
 + (void)getUserWithId:(NSNumber *)userId completionHandler:(CLUserHandler)handler;
++ (void)getUsersWithIds:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler;
 
 @end
