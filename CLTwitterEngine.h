@@ -3,7 +3,7 @@
 //  Sedge
 //
 //  Created by Casey Liss on 4/2/12.
-//  Copyright (c) 2012 Ironworks Consulting. All rights reserved.
+//  Copyright (c) 2012 Casey Liss. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

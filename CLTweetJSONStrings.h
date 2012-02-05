@@ -12,3 +12,5 @@
 #define CLTWEET_MEDIA_URL_URL @"url"
 #define CLTWEET_MEDIA @"entities"
 #define CLTWEET_RETWEETED_TWEET @"retweeted_status"
+#define CLUSER_REAL_NAME @"name"
+#define CLUSER_SCREEN_NAME @"screen_name"
