@@ -8,21 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-typedef id(^JSONConverter)(NSData *dataToConvert);
-typedef void(^connectionAuthorizer)(NSMutableURLRequest *request);
-typedef void(^arrayHandler)(NSArray *array, NSError *error);
+typedef id(^CLJSONConverter)(NSData *dataToConvert);
+typedef void(^CLConnectionAuthorizer)(NSMutableURLRequest *request);
+typedef void(^CLArrayHandler)(NSArray *array, NSError *error);
 
 @interface CLTwitterEngine : NSObject
 {
     
 }
 
-@property (nonatomic, copy) JSONConverter converter;
-@property (nonatomic, copy) connectionAuthorizer authorizer;
+@property (nonatomic, copy) CLJSONConverter converter;
+@property (nonatomic, copy) CLConnectionAuthorizer authorizer;
 
 + (id)sharedEngine;
 - (id)convertJSON:(NSData *)data;
 - (void)authorizeRequest:(NSMutableURLRequest *)request;
-- (void)getTimeLineWithCompletionHandler:(arrayHandler)handler;
+- (void)getTimeLineWithCompletionHandler:(CLArrayHandler)handler;
 
 @end

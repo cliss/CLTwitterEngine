@@ -10,6 +10,8 @@
 
 @implementation CLTwitterUser
 
+#pragma mark Properties
+
 - (NSString *)name
 {
     return [_dictionary valueForKey:@"name"];
@@ -19,6 +21,9 @@
 {
     return [_dictionary valueForKey:@"screen_name"];
 }
+
+#pragma mark -
+#pragma mark Initialization
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {

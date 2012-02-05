@@ -97,7 +97,7 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)getTweetRepliedToWithCompletionHandler:(tweetHandler)handler
+- (void)getTweetRepliedToWithCompletionHandler:(CLTweetHandler)handler
 {
     if ([self isReply])
     {
@@ -109,7 +109,7 @@
     }
 }
 
-- (void)deleteTweetWithErrorHandler:(errorHandler)handler
+- (void)deleteTweetWithCLErrorHandler:(CLErrorHandler)handler
 {
     NSString *url = [NSString stringWithFormat:@"http://api.twitter.com/1/statuses/destroy/%@.json", [self tweetId]];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:url]];
@@ -140,22 +140,7 @@
 #pragma mark -
 #pragma mark Class Methods
 
-+ (NSArray *)getTweetsFromJSONData:(NSData *)data
-{
-    NSMutableArray *retVal = [[NSMutableArray alloc] init];
-    NSError *error;
-    NSArray *tweets = [NSJSONSerialization JSONObjectWithData:data
-                                                           options:kNilOptions
-                                                             error:&error];
-    for (NSDictionary *tweet in tweets)
-    {
-        [retVal addObject:[[CLTweet alloc] initWithDictionary:tweet]];
-    }
-    
-    return retVal;
-}
-
-+ (void)getTweetWithId:(NSNumber *)tweetId completionHandler:(tweetHandler)handler
++ (void)getTweetWithId:(NSNumber *)tweetId completionHandler:(CLTweetHandler)handler
 {
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1/statuses/show.json?id=%@&include_entities=true", tweetId]]];
     NSLog(@"%@", [[fetcher mutableRequest] URL]);
@@ -173,7 +158,7 @@
     }];
 }
 
-+ (void)postTweet:(NSString *)text completionHandler:(tweetHandler)handler
++ (void)postTweet:(NSString *)text completionHandler:(CLTweetHandler)handler
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"]]; 
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 

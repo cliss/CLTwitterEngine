@@ -10,10 +10,17 @@
 #import "GTMHTTPFetcher.h"
 #import "CLTweet.h"
 
+@interface CLTwitterEngine ()
+- (NSArray *)getTweetsFromJSONData:(NSData *)data;
+@end
+
 @implementation CLTwitterEngine
 
 @synthesize converter;
 @synthesize authorizer;
+
+#pragma mark -
+#pragma mark Class Methods
 
 + (id)sharedEngine
 {
@@ -23,6 +30,9 @@
     
     return engine;
 }
+
+#pragma mark -
+#pragma mark Configurable Handlers
 
 - (id)convertJSON:(NSData *)data
 {
@@ -34,20 +44,38 @@
     [self authorizer](request);
 }
 
-- (void)getTimeLineWithCompletionHandler:(arrayHandler)handler
+#pragma mark -
+#pragma mark Instance Methods
+
+- (void)getTimeLineWithCompletionHandler:(CLArrayHandler)handler
 {
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/home_timeline.json"]];
     [self authorizeRequest:[fetcher mutableRequest]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
         if (error == nil)
         {
-            handler([CLTweet getTweetsFromJSONData:data], error);
+            handler([self getTweetsFromJSONData:data], error);
         }
         else
         {
             handler(nil, error);
         }
     }];
+}
+
+- (NSArray *)getTweetsFromJSONData:(NSData *)data
+{
+    NSMutableArray *retVal = [[NSMutableArray alloc] init];
+    NSError *error;
+    NSArray *tweets = [NSJSONSerialization JSONObjectWithData:data
+                                                      options:kNilOptions
+                                                        error:&error];
+    for (NSDictionary *tweet in tweets)
+    {
+        [retVal addObject:[[CLTweet alloc] initWithDictionary:tweet]];
+    }
+    
+    return retVal;
 }
 
 @end

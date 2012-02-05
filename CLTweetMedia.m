@@ -14,6 +14,9 @@
 
 @synthesize parent = _parent;
 
+#pragma mark -
+#pragma mark Properties
+
 - (NSArray *)hashTags
 {
     return [_dictionary objectForKey:CLTWEET_MEDIA_HASHTAGS];

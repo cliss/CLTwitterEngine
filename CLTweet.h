@@ -12,8 +12,8 @@
 @class CLTweet;
 @class CLTweetMedia;
 
-typedef void(^errorHandler)(NSError *error);
-typedef void(^tweetHandler)(CLTweet *tweet, NSError *error);
+typedef void(^CLErrorHandler)(NSError *error);
+typedef void(^CLTweetHandler)(CLTweet *tweet, NSError *error);
 
 @interface CLTweet : NSObject
 {
@@ -33,10 +33,10 @@ typedef void(^tweetHandler)(CLTweet *tweet, NSError *error);
 @property (readonly) CLTweet *retweetedTweet;
 
 - (id)initWithJSONData:(NSData *)data;
-- (void)getTweetRepliedToWithCompletionHandler:(tweetHandler)handler;
-- (void)deleteTweetWithErrorHandler:(errorHandler)handler;
-+ (NSArray *)getTweetsFromJSONData:(NSData *)data;
-+ (void)getTweetWithId:(NSNumber *)tweetId completionHandler:(tweetHandler)handler;
-+ (void)postTweet:(NSString *)text completionHandler:(tweetHandler)handler;
+- (id)initWithDictionary:(NSDictionary *)dictionary;
+- (void)getTweetRepliedToWithCompletionHandler:(CLTweetHandler)handler;
+- (void)deleteTweetWithCLErrorHandler:(CLErrorHandler)handler;
++ (void)getTweetWithId:(NSNumber *)tweetId completionHandler:(CLTweetHandler)handler;
++ (void)postTweet:(NSString *)text completionHandler:(CLTweetHandler)handler;
 
 @end
