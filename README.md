@@ -22,3 +22,6 @@ Example:
         // Your code here
     }];
 
+[fetcher]: http://code.google.com/p/gtm-http-fetcher/
+[JSON]: https://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html
+[OAuth]: http://code.google.com/p/gtm-oauth/
