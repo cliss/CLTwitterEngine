@@ -15,6 +15,8 @@
 
 @property (readonly) NSString *name;
 @property (readonly) NSString *screenName;
+@property (readonly) NSURL *profileImageURL;
+@property (readonly) NSImage *profileImage;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 

@@ -14,3 +14,4 @@
 #define CLTWEET_RETWEETED_TWEET @"retweeted_status"
 #define CLUSER_REAL_NAME @"name"
 #define CLUSER_SCREEN_NAME @"screen_name"
+#define CLUSER_PROFILE_IMAGE_URL @"profile_image_url_https"

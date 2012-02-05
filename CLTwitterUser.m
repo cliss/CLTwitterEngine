@@ -23,6 +23,16 @@
     return [_dictionary valueForKey:CLUSER_SCREEN_NAME];
 }
 
+- (NSURL *)profileImageURL
+{
+    return [NSURL URLWithString:[_dictionary valueForKey:CLUSER_PROFILE_IMAGE_URL]];
+}
+
+- (NSImage *)profileImage
+{
+    return [[NSImage alloc] initWithContentsOfURL:[self profileImageURL]];
+}
+
 #pragma mark -
 #pragma mark Initialization
 
