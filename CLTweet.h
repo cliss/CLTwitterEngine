@@ -19,6 +19,7 @@ typedef void(^CLTweetHandler)(CLTweet *tweet, NSError *error);
 {
     NSDictionary *_dictionary;
     CLTweetMedia *_media;
+    CLTweet *_retweetedTweet;
 }
 
 @property (readonly) NSNumber *tweetId;

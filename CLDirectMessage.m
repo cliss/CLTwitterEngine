@@ -17,6 +17,8 @@
 
 @implementation CLDirectMessage
 
+#pragma mark Properties
+
 - (NSDate *)date
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -66,6 +68,9 @@
     return _media;
 }
 
+#pragma mark -
+#pragma mark Initialization
+
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {
     if (self = [super init])
@@ -75,6 +80,9 @@
     
     return self;
 }
+
+#pragma mark -
+#pragma mark Class Methods
 
 + (void)getDirectMessageWithId:(NSNumber *)messageId completionHandler:(CLDirectMessageHandler)handler
 {

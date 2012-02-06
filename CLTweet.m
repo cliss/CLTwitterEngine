@@ -72,6 +72,24 @@
     return [[self media] textWithURLsExpanded];
 }
 
+- (BOOL)isRetweet
+{
+    return [_dictionary objectForKey:CLTWITTER_TWEET_RETWEETED_TWEET] != nil;
+}
+
+- (CLTweet *)retweetedTweet
+{
+    if (_retweetedTweet == nil)
+    {
+        if ([self isRetweet])
+        {
+            _retweetedTweet = [[CLTweet alloc] initWithDictionary:[_dictionary objectForKey:CLTWITTER_TWEET_RETWEETED_TWEET]];
+        }
+    }
+    
+    return _retweetedTweet;
+}
+
 #pragma mark -
 #pragma mark Initialization
 
@@ -119,23 +137,6 @@
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
         handler(error);
     }];
-}
-
-- (BOOL)isRetweet
-{
-    return [_dictionary objectForKey:CLTWITTER_TWEET_RETWEETED_TWEET] != nil;
-}
-
-- (CLTweet *)retweetedTweet
-{
-    if ([self isRetweet])
-    {
-        return [[CLTweet alloc] initWithDictionary:[_dictionary objectForKey:CLTWITTER_TWEET_RETWEETED_TWEET]];
-    }
-    else
-    {
-        return nil;
-    }
 }
 
 #pragma mark -
