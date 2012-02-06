@@ -9,6 +9,8 @@
 #import "CLTwitterEngine.h"
 #import "GTMHTTPFetcher.h"
 #import "CLTweet.h"
+#import "CLDirectMessage.h"
+#import "CLTwitterEndpoints.h"
 
 @interface CLTwitterEngine ()
 - (NSArray *)getTweetsFromJSONData:(NSData *)data;
@@ -49,7 +51,7 @@
 
 - (void)getTimeLineWithCompletionHandler:(CLArrayHandler)handler
 {
-    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/home_timeline.json"]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_TIMELINE_ENDPOINT]];
     [self authorizeRequest:[fetcher mutableRequest]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
         if (error == nil)
@@ -66,16 +68,88 @@
 - (NSArray *)getTweetsFromJSONData:(NSData *)data
 {
     NSMutableArray *retVal = [[NSMutableArray alloc] init];
-    NSError *error;
-    NSArray *tweets = [NSJSONSerialization JSONObjectWithData:data
-                                                      options:kNilOptions
-                                                        error:&error];
+    NSArray *tweets = [self convertJSON:data];
     for (NSDictionary *tweet in tweets)
     {
         [retVal addObject:[[CLTweet alloc] initWithDictionary:tweet]];
     }
     
     return retVal;
+}
+
+- (void)getRecentDirectMessagesWithCompletionHandler:(CLArrayHandler)handler
+{
+    NSMutableArray *retVal = [[NSMutableArray alloc] init];
+    
+    NSArray* (^sorter)() = ^{
+        return [retVal sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            NSDate *first = [(CLDirectMessage *)a date];
+            NSDate *second = [(CLDirectMessage *)b date];
+            NSComparisonResult result = [first compare:second];
+            if (NSOrderedAscending == result)
+            {
+                return NSOrderedDescending;
+            }
+            else if (NSOrderedDescending == result)
+            {
+                return NSOrderedAscending;
+            }
+            else
+            {
+                return NSOrderedSame;
+            }
+        }];
+    };
+    
+    // Get received DMs
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_DIRECT_MESSAGES_RECEIVED_ENDPOINT]];
+    [self authorizeRequest:[fetcher mutableRequest]];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        if (error != nil)
+        {
+            NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            handler(nil, error);
+        }
+        else
+        {
+            BOOL send = [retVal count] > 0;
+            NSArray *messages = [self convertJSON:data];
+            for (NSDictionary *dict in messages)
+            {
+                [retVal addObject:[[CLDirectMessage alloc] initWithDictionary:dict]];
+            }
+            if (send)
+            {
+                handler(sorter(), error);
+            }
+            
+        }
+    }];
+    
+    // Get sent DMs
+    GTMHTTPFetcher *sentFetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_DIRECT_MESSAGES_SENT_ENDPOINT]];
+    [self authorizeRequest:[sentFetcher mutableRequest]];
+    [sentFetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        if (error != nil)
+        {
+            NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            handler(nil, error);
+        }
+        else
+        {
+            BOOL send = [retVal count] > 0;
+            NSArray *messages = [self convertJSON:data];
+            for (NSDictionary *dict in messages)
+            {
+                [retVal addObject:[[CLDirectMessage alloc] initWithDictionary:dict]];
+            }
+            
+            if (send)
+            {
+                handler(sorter(), error);
+            }
+        }
+    }];
 }
 
 @end

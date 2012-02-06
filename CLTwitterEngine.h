@@ -24,5 +24,6 @@ typedef void(^CLArrayHandler)(NSArray *array, NSError *error);
 - (id)convertJSON:(NSData *)data;
 - (void)authorizeRequest:(NSMutableURLRequest *)request;
 - (void)getTimeLineWithCompletionHandler:(CLArrayHandler)handler;
+- (void)getRecentDirectMessagesWithCompletionHandler:(CLArrayHandler)handler;
 
 @end

@@ -12,8 +12,6 @@
 
 @implementation CLTweetMedia
 
-@synthesize parent = _parent;
-
 #pragma mark -
 #pragma mark Properties
 
@@ -40,29 +38,25 @@
 #pragma mark -
 #pragma mark Initialization
 
-- (id)initWithParent:(CLTweet *)tweet data:(NSDictionary *)data
+- (id)initWithParentText:(NSString *)text mediaData:(NSDictionary *)data
 {
     if (self = [super init])
     {
-        [self setParent:tweet];
+        _text = text;
         _dictionary = data;
     }
     
     return self;
 }
 
-- (NSString *)expandUrlsInParent
+- (NSString *)textWithURLsExpanded
 {
-    if ([self parent] == nil)
+    if (![self hasUrls])
     {
-        return nil;
-    }
-    else if (![self hasUrls])
-    {
-        return [[self parent] text];
+        return _text;
     }
     
-    NSMutableString *retVal = [[[self parent] text] mutableCopy];
+    NSMutableString *retVal = [_text mutableCopy];
     for (NSDictionary *url in [self urls])
     {
         [retVal replaceOccurrencesOfString:[url objectForKey:CLTWITTER_TWEET_MEDIA_URL_URL]

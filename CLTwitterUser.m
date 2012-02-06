@@ -8,6 +8,7 @@
 
 #import "CLTwitterUser.h"
 #import "CLTweetJSONStrings.h"
+#import "CLTwitterEndpoints.h"
 #import "GTMHTTPFetcher.h"
 #import "CLTwitterEngine.h"
 
@@ -116,7 +117,7 @@
     }
     
     NSString *cursorString = [NSString stringWithFormat:@"%lli", [cursor longLongValue]];
-    NSString *urlString = [NSString stringWithFormat:@"https://api.twitter.com/1/followers/ids.json?cursor=%@&screen_name=%@", cursorString, [self screenName]];
+    NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_FOLLOWERS_ENDPOINT_FORMAT, cursorString, [self screenName]];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
@@ -151,7 +152,7 @@
     }
     
     NSString *cursorString = [NSString stringWithFormat:@"%lli", [cursor longLongValue]];
-    NSString *urlString = [NSString stringWithFormat:@"https://api.twitter.com/1/friends/ids.json?cursor=%@&screen_name=%@", cursorString, [self screenName]];
+    NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_FOLLOWING_ENDPOINT_FORMAT, cursorString, [self screenName]];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
@@ -184,7 +185,7 @@
 
 + (void)getUserWithScreenName:(NSString *)screenName completionHandler:(CLUserHandler)handler
 {
-    NSString *url = [NSString stringWithFormat:@"http://api.twitter.com/1/users/show.json?screen_name=%@&include_entities=true", screenName];
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_BY_SCREEN_NAME_ENDPOINT_FORMAT, screenName];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:url]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
@@ -201,7 +202,7 @@
 
 + (void)getUserWithId:(NSNumber *)userId completionHandler:(CLUserHandler)handler
 {
-    NSString *url = [NSString stringWithFormat:@"http://api.twitter.com/1/users/show.json?user_id=%@&include_entities=true", userId];
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_BY_ID_ENDPOINT_FORMAT, userId];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:url]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
@@ -218,9 +219,8 @@
 
 + (void)getUsersWithIds:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler
 {
-    NSString *urlString = [NSString stringWithFormat:@"https://api.twitter.com/1/users/lookup.json?user_id=%@&include_entities=true", usersCsv];
+    NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_USERS_BY_IDS_ENDPOINT_FORMAT, usersCsv];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
-    NSLog(@"Fetcher URL: %@", [[fetcher mutableRequest] URL]);
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
         if (error != nil)

@@ -8,6 +8,7 @@
 
 #import "CLTweet.h"
 #import "CLTweetJSONStrings.h"
+#import "CLTwitterEndpoints.h"
 #import "CLTwitterEngine.h"
 #import "GTMHTTPFetcher.h"
 #import "NSDictionary+UrlEncoding.h"
@@ -60,7 +61,7 @@
 {
     if (_media == nil)
     {
-        _media = [[CLTweetMedia alloc] initWithParent:self data:[_dictionary objectForKey:CLTWITTER_TWEET_MEDIA]];
+        _media = [[CLTweetMedia alloc] initWithParentText:[self text] mediaData:[_dictionary objectForKey:CLTWITTER_TWEET_MEDIA]];
     }
     
     return _media;
@@ -68,7 +69,7 @@
 
 - (NSString *)expandedText
 {
-    return [[self media] expandUrlsInParent];
+    return [[self media] textWithURLsExpanded];
 }
 
 #pragma mark -
@@ -111,7 +112,7 @@
 
 - (void)deleteTweetWithCLErrorHandler:(CLErrorHandler)handler
 {
-    NSString *url = [NSString stringWithFormat:@"http://api.twitter.com/1/statuses/destroy/%@.json", [self tweetId]];
+    NSString *url = [NSString stringWithFormat:CLTWITTER_DELETE_TWEET_ENDPOINT_FORMAT, [self tweetId]];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:url]];
     [[fetcher mutableRequest] setHTTPMethod:@"POST"];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
@@ -142,8 +143,7 @@
 
 + (void)getTweetWithId:(NSNumber *)tweetId completionHandler:(CLTweetHandler)handler
 {
-    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1/statuses/show.json?id=%@&include_entities=true", tweetId]]];
-    NSLog(@"%@", [[fetcher mutableRequest] URL]);
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:[NSString stringWithFormat:CLTWITTER_GET_TWEET_BY_ID_ENDPOINT_FORMAT, tweetId]]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
         if (error != nil)
@@ -160,7 +160,7 @@
 
 + (void)postTweet:(NSString *)text completionHandler:(CLTweetHandler)handler
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"]]; 
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:CLTWITTER_POST_TWEET_ENDPOINT]]; 
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[[[NSDictionary dictionaryWithObjectsAndKeys:text, CLTWITTER_TWEET_UPDATE_STATUS, nil] urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];

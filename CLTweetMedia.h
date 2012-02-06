@@ -13,16 +13,15 @@
 @interface CLTweetMedia : NSObject
 {
     NSDictionary *_dictionary;
-    __weak CLTweet *_parent;
+    NSString *_text;
 }
 
 @property (nonatomic, readonly) NSArray *hashTags;
 @property (nonatomic, readonly) NSArray *urls;
 @property (nonatomic, readonly) BOOL hasUrls;
 @property (nonatomic, readonly) NSArray *mentions;
-@property (nonatomic, weak) CLTweet *parent;
 
-- (id)initWithParent:(CLTweet *)tweet data:(NSDictionary *)data;
-- (NSString *)expandUrlsInParent;
+- (id)initWithParentText:(NSString *)text mediaData:(NSDictionary *)data;
+- (NSString *)textWithURLsExpanded;
 
 @end
