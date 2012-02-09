@@ -11,8 +11,10 @@
 #import "CLTwitterEndpoints.h"
 #import "CLTwitterEngine.h"
 #import "GTMHTTPFetcher.h"
+#import "GTMMIMEDocument.h"
 #import "NSDictionary+UrlEncoding.h"
 #import "CLTWeetMedia.h"
+#import "NSData+Base64.h"
 
 @implementation CLTweet
 
@@ -166,6 +168,8 @@
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[[[NSDictionary dictionaryWithObjectsAndKeys:text, CLTWITTER_TWEET_UPDATE_STATUS, nil] urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
     
+    NSLog(@"%@", [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding]);
+    
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     
@@ -182,4 +186,57 @@
     }];
 }
 
++ (void)postTweet:(NSString *)text withImage:(NSImage *)image completionHandler:(CLTweetHandler)handler
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:CLTWITTER_POST_TWEET_WITH_MEDIA_ENDPOINT]];
+    GTMMIMEDocument *doc = [GTMMIMEDocument MIMEDocument];
+    
+    // Image
+    NSBitmapImageRep *imageRep = [[image representations] objectAtIndex:0];
+    NSData *imageData = [imageRep representationUsingType:NSPNGFileType properties:nil];
+    NSDictionary *headers = [NSDictionary dictionaryWithObjectsAndKeys:
+                             @"form-data; name=\"media[]\"; filename=\"./image.png\"", @"Content-Disposition",
+                             @"application/octet-stream", @"Content-Type",
+                             nil];
+    [doc addPartWithHeaders:headers body:imageData];
+    // Status
+    [doc addPartWithHeaders:[NSDictionary dictionaryWithObject:@"form-data; name=\"status\"" forKey:@"Content-Disposition"]
+                       body:[text dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSInputStream *stream = nil;
+    NSString *boundary = nil;
+    [doc generateInputStream:&stream length:NULL boundary:&boundary];
+    [request setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary] forHTTPHeaderField:@"Content-Type"];
+    
+    for (NSString *header in [request allHTTPHeaderFields])
+    {
+        NSLog(@"%@ = %@", header, [request valueForHTTPHeaderField:header]);
+    }
+    [[CLTwitterEngine sharedEngine] authorizeRequest:request];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    
+    if (stream)
+    {
+        [fetcher setPostStream:stream];
+        [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+            if (error != nil)
+            {
+                NSLog(@"%@", [[CLTwitterEngine sharedEngine] convertJSON:data]);
+                NSString *message = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                if ([message length] < 1000)
+                {
+                    NSLog(@"%@", message);
+                }
+                NSLog(@"%@", error);
+                handler(nil, error);
+            }
+            else
+            {
+                CLTweet *tweet = [[CLTweet alloc] initWithJSONData:data];
+                handler(tweet, error);
+            }
+        }];
+    }
+}
+ 
 @end

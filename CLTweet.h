@@ -39,5 +39,6 @@ typedef void(^CLTweetHandler)(CLTweet *tweet, NSError *error);
 - (void)deleteTweetWithCLErrorHandler:(CLErrorHandler)handler;
 + (void)getTweetWithId:(NSNumber *)tweetId completionHandler:(CLTweetHandler)handler;
 + (void)postTweet:(NSString *)text completionHandler:(CLTweetHandler)handler;
++ (void)postTweet:(NSString *)text withImage:(NSImage *)image completionHandler:(CLTweetHandler)handler;
 
 @end

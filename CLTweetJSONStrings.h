@@ -13,6 +13,7 @@
 #define CLTWITTER_TWEET_MEDIA_URL_URL @"url"
 #define CLTWITTER_TWEET_MEDIA @"entities"
 #define CLTWITTER_TWEET_RETWEETED_TWEET @"retweeted_status"
+#define CLTWITTER_TWEET_NEW_MEDIA @"media[]"
 
 #pragma mark -
 #pragma mark Users
