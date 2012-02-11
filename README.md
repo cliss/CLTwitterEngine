@@ -19,6 +19,8 @@ Requirements
 ============
 Requires [GTMHttpFetcher][fetcher].
 
+Because you are providing `CLTwitterEngine` with simply a block of code that will sign OAuth requests (see below), to sign into Twitter using OAuth is entirely your responsibility.
+
 Initialization
 ==============
 
@@ -37,8 +39,7 @@ Example:
     {
         // Your code here
     }];
-    
-Note that because you are providing `CLTwitterEngine` with simply a block of code that will sign OAuth requests, to sign into Twitter using OAuth is entirely your responsibility.
+
     
 Use
 ===
@@ -71,7 +72,7 @@ You can post a text-only tweet:
     
 You can post a tweet with an image:
 
-    [CLTweet postTweet:@"This is yet another test upload." withImage:image completionHandler:^(CLTweet *tweet, NSError *error) {
+    [CLTweet postTweet:@"Some clever message." withImage:/*Some_nifty_NSImage*/ completionHandler:^(CLTweet *tweet, NSError *error) {
         if (error != nil)
         {
             // Handle the error.
@@ -125,7 +126,7 @@ You can get a user by handle/screen name:
     
 ...or by ID:
 
-    [CLTwitterUser getUserWithId:[NSNumber numberWithLongLong:123456789012341234 completionHandler:^(CLTwitterUser *user, NSError *error) {
+    [CLTwitterUser getUserWithId:[NSNumber numberWithLongLong:123456789012341234] completionHandler:^(CLTwitterUser *user, NSError *error) {
                 if (error != nil)
                 {
                     // Handle error.
