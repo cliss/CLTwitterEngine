@@ -11,7 +11,7 @@
 #define CLTWITTER_GET_TWEET_BY_ID_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/show.json?id=%@&include_entities=true"
 #define CLTWITTER_POST_TWEET_ENDPOINT @"http://api.twitter.com/1/statuses/update.json"
 #define CLTWITTER_GET_TIMELINE_ENDPOINT @"http://api.twitter.com/1/statuses/home_timeline.json"
-#define CLTWITTER_POST_TWEET_WITH_MEDIA_ENDPOINT @"http://upload.twitter.com/1/statuses/update_with_media.json"
+#define CLTWITTER_POST_TWEET_WITH_MEDIA_ENDPOINT @"https://upload.twitter.com/1/statuses/update_with_media.json"
 
 #pragma mark -
 #pragma mark Direct Messages
