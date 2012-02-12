@@ -1,7 +1,7 @@
 CLTwitterEngine
 ===============
 
-A simple, ARC and blocks-based Twitter engine for Cocoa and CocoaTouch.  Currently, it is assumed that all picture uploads will be performed using Twitter's image upload service.
+A simple, ARC and blocks-based Twitter engine for Cocoa and CocoaTouch.  `CLTweetEngine` currently supports both [TweetMarker][tm] and Twitter's image upload service.
 
 Basics
 ======
@@ -143,3 +143,4 @@ You can get a user by handle/screen name:
 [fetcher]: http://code.google.com/p/gtm-http-fetcher/
 [JSON]: https://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html
 [OAuth]: http://code.google.com/p/gtm-oauth/
+[tm]: http://www.tweetmarker.net/
