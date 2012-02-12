@@ -18,8 +18,15 @@
 
 @implementation CLTwitterEngine
 
+#pragma mark Properties
+
 @synthesize converter;
 @synthesize authorizer;
+
+- (BOOL)isReady
+{
+    return [self authorizer] != nil && [self converter] != nil;
+}
 
 #pragma mark -
 #pragma mark Class Methods

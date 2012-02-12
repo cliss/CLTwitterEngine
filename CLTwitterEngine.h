@@ -19,6 +19,7 @@ typedef void(^CLArrayHandler)(NSArray *array, NSError *error);
 
 @property (nonatomic, copy) CLJSONConverter converter;
 @property (nonatomic, copy) CLConnectionAuthorizer authorizer;
+@property (readonly) BOOL isReady;
 
 + (id)sharedEngine;
 - (id)convertJSON:(NSData *)data;

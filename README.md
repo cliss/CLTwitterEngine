@@ -14,20 +14,21 @@ Basics
 * Clients of the library should be able to provide a JSON parser of their choice.  This is to allow use on older versions of Mac OS X and iOS, which do not have [NSJSONSerialization][JSON].
 * Objects should know how to get or post themselves, whenever possible.  For example, the `CLTweet` class is capable of getting a tweet or posting one. 
 * The API should be as simple as possible.
+* Yes, there are [other frameworks][mg], but sometimes you just want to roll your own.  For the hell of it.
 
 Requirements
 ============
 Requires [GTMHttpFetcher][fetcher].
 
-Because you are providing `CLTwitterEngine` with simply a block of code that will sign OAuth requests (see below), to sign into Twitter using OAuth is entirely your responsibility.
+Because you are providing `CLTwitterEngine` with a block of code that will sign OAuth requests (see below), to sign into Twitter using OAuth is entirely your responsibility.  There are frameworks which will handle this exchange for you; `CLTwitterEngine` used [GTMOauthAuthentication][OAuth] during development.
 
 Initialization
 ==============
 
 To initialize: 
 
-* You must specify a way to convert JSON data to Foundation objects; the assumed way of doing so is using [NSJSONSerialization][JSON], though presumably any framework will do.
-* You must specify a way to add OAuth authorization to a `NSMutableURLRequest`.  `CLTwitterEngine` was written to work with [GTMOauthAuthentication][OAuth], though again, any framework should work.
+* You must specify a way to convert JSON data to Foundation objects; the assumed way of doing so is using [NSJSONSerialization][JSON], though presumably any framework will do, as long as `NSDictionary`s and `NSArray`s are returned where appropriate.
+* You must specify a way to add OAuth authorization to a `NSMutableURLRequest`.  Again, any framework should work, though GTMOauthAuthentication was used during development.
 
 Example:
     
@@ -40,6 +41,23 @@ Example:
         // Your code here
     }];
 
+Sample Initialization
+=====================
+
+For illustrative purposes, here are the authorizer and converter that are being used to test `CLTwitterEngine`:
+
+    [[CLTwitterEngine sharedEngine] setAuthorizer:^(NSMutableURLRequest *request)
+     {
+         // ivar: GTMOAuthAuthentication *_auth;
+         [_auth authorizeRequest:request];
+     }];
+    [[CLTwitterEngine sharedEngine] setConverter:^(NSData *data)
+    {
+        NSError *error;
+        return [NSJSONSerialization JSONObjectWithData:data 
+                                               options:kNilOptions
+                                                 error:&error];
+    }];
     
 Use
 ===
@@ -137,10 +155,51 @@ You can get a user by handle/screen name:
                 }
     }];
 
+TweetMarker
+===========
 
+[Tweet Marker][tm] is, in short, a way for one or more Twitter clients to all cooperate and note a user's last read tweet.  It is opt-in, and requires its own API key–see [the website][tm] for details.
 
+Tweet Marker allows several different "collections" to have marks.  For example, "timeline", or "mentions".  With that in mind...
+
+To retrieve the current marker in the timeline for the user [SedgeApp][s]:
+
+    [CLTweetMarker getLastReadForUsername:@"sedgeapp" 
+                             inCollection:@"timeline" 
+                               withApiKey:@">>>tweetmarker api key<<<" 
+                        completionHandler:^(NSNumber *tweetId, NSError *error) {
+                            if (error == nil)
+                            {
+                                // Handle error.
+                            }
+                            else
+                            {
+                                // Scroll your view to the tweet with ID == tweetId.
+                            }
+    }];
+
+To set the current marker in the timeline:
+
+    [CLTweetMarker markLastReadAsTweet:[NSNumber numberWithLongLong:168739424295854082]
+                           forUsername:@"caseyliss"
+                          inCollection:@"timeline"
+                            withApiKey:@"JS-DDD9C14C29D5"
+                     completionHandler:^(BOOL success, NSError *error) {
+                         if (!success)
+                         {
+                             // Handle error.
+                         }
+                         else
+                         {
+                             // The marker has been set.  Optionally, update your UI to show that.
+                         }
+                     }];
+    
+    
 
 [fetcher]: http://code.google.com/p/gtm-http-fetcher/
 [JSON]: https://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html
 [OAuth]: http://code.google.com/p/gtm-oauth/
 [tm]: http://www.tweetmarker.net/
+[s]: http://twitter.com/SedgeApp/
+[mg]: https://github.com/mattgemmell/MGTwitterEngine
