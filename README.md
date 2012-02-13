@@ -183,7 +183,7 @@ To set the current marker in the timeline:
     [CLTweetMarker markLastReadAsTweet:[NSNumber numberWithLongLong:168739424295854082]
                            forUsername:@"caseyliss"
                           inCollection:@"timeline"
-                            withApiKey:@"JS-DDD9C14C29D5"
+                            withApiKey:@">>>tweetmarker api key<<<"
                      completionHandler:^(BOOL success, NSError *error) {
                          if (!success)
                          {
