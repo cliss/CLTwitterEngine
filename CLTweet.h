@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "CLTwitterUser.h"
+#import "CLTwitterEngine.h"
 
 @class CLTweet;
 @class CLTweetMedia;
 
-typedef void(^CLErrorHandler)(NSError *error);
 typedef void(^CLTweetHandler)(CLTweet *tweet, NSError *error);
 
 @interface CLTweet : NSObject
@@ -36,7 +36,7 @@ typedef void(^CLTweetHandler)(CLTweet *tweet, NSError *error);
 - (id)initWithJSONData:(NSData *)data;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)getTweetRepliedToWithCompletionHandler:(CLTweetHandler)handler;
-- (void)deleteTweetWithCLErrorHandler:(CLErrorHandler)handler;
+- (void)deleteTweetWithErrorHandler:(CLErrorHandler)handler;
 + (void)getTweetWithId:(NSNumber *)tweetId completionHandler:(CLTweetHandler)handler;
 + (void)postTweet:(NSString *)text completionHandler:(CLTweetHandler)handler;
 + (void)postTweet:(NSString *)text withImage:(NSImage *)image completionHandler:(CLTweetHandler)handler;

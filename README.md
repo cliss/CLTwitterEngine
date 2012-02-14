@@ -65,7 +65,7 @@ Use
 Subsequent to initialization above, the engine is ready to use.  You can get the timeline by:
 
     [[CLTwitterEngine sharedEngine] getTimeLineWithCompletionHandler:^(NSArray *timeline, NSError *error) {
-        if (error != nil)
+        if (error)
         {
             // Handle the error.
         }
@@ -75,10 +75,12 @@ Subsequent to initialization above, the engine is ready to use.  You can get the
         }
     }];
     
+##Posting Tweets
+    
 You can post a text-only tweet:
 
     [CLTweet postTweet:@"Look at me; I'm tweeting!" completionHandler:^(CLTweet *tweet, NSError *error) {
-        if (error != nil)
+        if (error)
         {
             // Handle the error.
         }
@@ -91,7 +93,7 @@ You can post a text-only tweet:
 You can post a tweet with an image:
 
     [CLTweet postTweet:@"Some clever message." withImage:/*Some_nifty_NSImage*/ completionHandler:^(CLTweet *tweet, NSError *error) {
-        if (error != nil)
+        if (error)
         {
             // Handle the error.
         }
@@ -100,11 +102,13 @@ You can post a tweet with an image:
             // The tweet and image have been posted; the result is provided for convenience.
         }
     }];
+
+##Direct Messages
     
 You can get recent direct messages (both sent and received are in this same array):
 
-    [[CLTwitterEngine sharedEngine] getRecentDirectMessagesWithCompletionHandler:^(NSArray *messages, NSError *innerError) {
-        if (innerError != nil)
+    [[CLTwitterEngine sharedEngine] getRecentDirectMessagesWithCompletionHandler:^(NSArray *messages, NSError *error) {
+        if (error)
         {
             // Hanlde the error.
         }
@@ -119,7 +123,7 @@ Or perhaps just an individual direct message:
 
     [CLDirectMessage getDirectMessageWithId:[NSNumber numberWithLongLong:123456789012341234] 
                           completionHandler:^(CLDirectMessage *message, NSError *error) {
-        if (error != nil)
+        if (error)
         {
             // Handle the error.
         }
@@ -129,10 +133,12 @@ Or perhaps just an individual direct message:
         }
     }];
 
+##Users
+
 You can get a user by handle/screen name:
 
     [CLTwitterUser getUserWithScreenName:@"SedgeApp" completionHandler:^(CLTwitterUser *user, NSError *error) {
-        if (error != nil)
+        if (error)
         {
             // Handle error.
         }
@@ -145,7 +151,7 @@ You can get a user by handle/screen name:
 ...or by ID:
 
     [CLTwitterUser getUserWithId:[NSNumber numberWithLongLong:123456789012341234] completionHandler:^(CLTwitterUser *user, NSError *error) {
-                if (error != nil)
+                if (error)
                 {
                     // Handle error.
                 }
@@ -154,6 +160,59 @@ You can get a user by handle/screen name:
                     // The user is provided.
                 }
     }];
+    
+##Search
+    
+Saved searches are also handled.  To get all of a user's saved searches:
+
+    [CLTwitterSavedSearch getSavedSearchTermsWithHandler:^(NSArray *searches, NSError *error) {
+        if (error)
+        {
+            // Handler error.
+        }
+        else
+        {
+            // searches is an array of CLTwitterSavedSearch objects.
+        }
+    }];
+
+To get an individual saved search:
+
+    [CLTwitterSavedSearch getSavedSearchWithId:[NSNumber numberWithLong:12345678]
+                             completionHandler:^(CLTwitterSavedSearch *search, NSError *error) {
+                                 if (error)
+                                 {
+                                     // Handle error.
+                                 }
+                                 else
+                                 {
+                                     // Saved search retrieved.
+                                 }
+                             }];
+
+To create a new saved search:
+
+    [CLTwitterSavedSearch createSavedSearchWithQuery:@"Testing" completionHandler:^(CLTwitterSavedSearch *search, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Newly created saved search provided for convenience.
+        }
+    }];
+    
+To delete a saved search:
+
+    // Local variable: CLTwitterSavedSearch *search
+    [search deleteWithErrorHandler:^(NSError *innerError) {
+        if (error)
+        {
+            // Handle error.
+        }
+    }];
+
 
 TweetMarker
 ===========
@@ -181,7 +240,7 @@ To retrieve the current marker in the timeline for the user [SedgeApp][s]:
 To set the current marker in the timeline:
 
     [CLTweetMarker markLastReadAsTweet:[NSNumber numberWithLongLong:168739424295854082]
-                           forUsername:@"caseyliss"
+                           forUsername:@"sedgeapp"
                           inCollection:@"timeline"
                             withApiKey:@">>>tweetmarker api key<<<"
                      completionHandler:^(BOOL success, NSError *error) {

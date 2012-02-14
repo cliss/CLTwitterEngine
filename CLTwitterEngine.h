@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void(^CLErrorHandler)(NSError *error);
 typedef id(^CLJSONConverter)(NSData *dataToConvert);
 typedef void(^CLConnectionAuthorizer)(NSMutableURLRequest *request);
 typedef void(^CLArrayHandler)(NSArray *array, NSError *error);

@@ -128,7 +128,7 @@
     }
 }
 
-- (void)deleteTweetWithCLErrorHandler:(CLErrorHandler)handler
+- (void)deleteTweetWithErrorHandler:(CLErrorHandler)handler
 {
     NSString *url = [NSString stringWithFormat:CLTWITTER_DELETE_TWEET_ENDPOINT_FORMAT, [self tweetId]];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:url]];
@@ -165,8 +165,6 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[[[NSDictionary dictionaryWithObjectsAndKeys:text, CLTWITTER_TWEET_UPDATE_STATUS, nil] urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSLog(@"%@", [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding]);
     
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
