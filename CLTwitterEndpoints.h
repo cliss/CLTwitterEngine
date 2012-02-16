@@ -28,7 +28,9 @@
 #define CLTWITTER_GET_USERS_BY_IDS_ENDPOINT_FORMAT @"https://api.twitter.com/1/users/lookup.json?user_id=%@&include_entities=true"
 
 #pragma mark -
-#pragma mark Saved Searches
+#pragma mark Search
+#define CLTWITTER_GET_SEARCH_BASE_ENDPOINT @"http://search.twitter.com/search.json"
+#define CLTWITTER_GET_SEARCH_ENDPOINT_FORMAT @"%@?q=%@&include_entities=true&result_type=recent&rpp=100"
 #define CLTWITTER_GET_SAVED_SEARCHES_ENDPOINT @"https://api.twitter.com/1/saved_searches.json"
 #define CLTWITTER_GET_SAVED_SEARCH_ENDPOINT_FORMAT @"https://api.twitter.com/1/saved_searches/show/%@.json"
 #define CLTWITTER_DELETE_SEARCH_ENDPOINT_FORMAT @"https://api.twitter.com/1/saved_searches/destroy/%@.json"

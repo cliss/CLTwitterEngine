@@ -162,13 +162,55 @@ You can get a user by handle/screen name:
     }];
     
 ##Search
+
+Both regular searches and saved searches are supported.
+
+###Regular Searches
+
+To perform a search:
+
+    [CLTwitterSearch beginSearchWithQuery:@"some_search_query" completionHandler:^(CLTwitterSearch *searchResult, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Search result object is provided.  The actual results are in [searchResult results].
+        }
+        
+Once you have a `CLTwitterSearch` object, you can use it to get the next/older batch of results:
+
+    [searchResult getOlderSearchResultsWithCompletionHandler:^(CLTwitterSearch *searchResult, NSError *innerError) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Now you have a new search result, which ostensibly could replace the one you have.
+        }
+        
+Similarly, you can go the opposite direction and ask for new results since your last search:
+
+    [searchResult getNewerSearchResultsWithCompletionHandler:^(CLTwitterSearch *searchResult, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Now you have a new search result, which ostensibly could replace the one you have.
+        }
+
+###Saved Searches
     
 Saved searches are also handled.  To get all of a user's saved searches:
 
     [CLTwitterSavedSearch getSavedSearchTermsWithHandler:^(NSArray *searches, NSError *error) {
         if (error)
         {
-            // Handler error.
+            // Handle error.
         }
         else
         {

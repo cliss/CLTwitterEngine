@@ -21,6 +21,7 @@ typedef void(^CLUserArrayHandler)(NSArray *users, NSError *error);
 
 @property (readonly) NSString *name;
 @property (readonly) NSString *screenName;
+@property (readonly) NSString *nameOrScreenName;
 @property (readonly) NSURL *profileImageURL;
 @property (readonly) NSImage *profileImage;
 @property (readonly) BOOL isVerified;

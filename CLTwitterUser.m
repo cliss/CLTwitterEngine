@@ -32,6 +32,11 @@
     return [_dictionary valueForKey:CLTWITTER_USER_SCREEN_NAME];
 }
 
+- (NSString *)nameOrScreenName
+{
+    return [self name] ? [self name] : [self screenName];
+}
+
 - (NSURL *)profileImageURL
 {
     return [NSURL URLWithString:[_dictionary valueForKey:CLTWITTER_USER_PROFILE_IMAGE_URL]];
