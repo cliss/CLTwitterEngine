@@ -16,6 +16,80 @@ Basics
 * The API should be as simple as possible.
 * Yes, there are [other frameworks][mg], but sometimes you just want to roll your own.  For the hell of it.
 
+API Coverage
+============
+At some point, the entire Twitter API may be covered.  However, the below are the API calls that are intended to be implemented.
+
+### Timeline 
+☑ Get home timeline<br />
+☐ Get mentions<br />
+☐ Get public timeline<br />
+☐ Get retweets of me<br />
+☐ Get user timeline<br />
+
+### Tweets
+☐ Get users whom retweeted a tweet<br />
+☐ Get retweets of a tweet<br />
+☑ Get single tweet<br />
+☑ Delete tweet<br />
+☐ Post retweet of a tweet<br />
+☑ Post tweet<br />
+☑ Post tweet with an image<br />
+
+### Search
+☑ Get search results<br />
+
+### Saved searches
+☑ Get saved searches<br />
+☑ Get single saved search<br />
+☑ Create a saved search<br />
+☑ Delete a saved search<br />
+
+### Direct Messages
+☑ Get messages to me<br />
+☑ Get messages by me<br />
+☐ Delete a message<br />
+☐ Post a message<br />
+☑ Get single message<br />
+
+### Followers
+☑ Get my followers<br />
+☑ Get my followees<br />
+☐ Get incoming follow requests<br />
+☐ Get outgoing follow requests<br />
+☐ Follow a user<br />
+☐ Unfollow a user<br />
+
+### Users
+☑ Get users in bulk<br />
+☐ Get a user's profile image<br />
+☐ Get search results for a user search<br />
+☑ Get a user<br />
+
+### Favorites
+☐ Get favorites<br />
+☐ Create a favorite<br />
+☐ Remove a favorite<br />
+
+### Account
+☐ Get rate limit status<br />
+☐ Post update to account<br />
+☐ Post update of profile image<br />
+☐ Get account totals<br />
+
+### Block
+☐ Get all my blocked users<br />
+☐ Get information about one block<br />
+☐ Create a new block<br />
+☐ Unblock a user<br />
+
+### Spam
+☐ Report spam<br />
+
+### Help
+☐ Get configuration<br />
+
+
 Requirements
 ============
 Requires [GTMHttpFetcher][fetcher].
