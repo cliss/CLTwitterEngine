@@ -10,6 +10,7 @@
 #import "CLTweetJSONStrings.h"
 #import "CLTwitterEndpoints.h"
 #import "CLTwitterEngine.h"
+#import "CLNetworkUsageController.h"
 #import "GTMHTTPFetcher.h"
 #import "NSDictionary+UrlEncoding.h"
 #import "CLTWeetMedia.h"
@@ -134,7 +135,9 @@
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:url]];
     [[fetcher mutableRequest] setHTTPMethod:@"POST"];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         handler(error);
     }];
 }
@@ -146,7 +149,9 @@
 {
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:[NSString stringWithFormat:CLTWITTER_GET_TWEET_BY_ID_ENDPOINT_FORMAT, tweetId]]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);
@@ -169,7 +174,9 @@
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error == nil)
         {
             CLTweet *tweet = [[CLTweet alloc] initWithJSONData:data];
@@ -231,7 +238,9 @@
     
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error == nil)
         {
             CLTweet *tweet = [[CLTweet alloc] initWithJSONData:data];

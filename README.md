@@ -133,6 +133,16 @@ For illustrative purposes, here are the authorizer and converter that are being 
                                                  error:&error];
     }];
     
+Optional Step: Set up for Network Access Callbacks
+======================================================
+Optionally, you can set up a handler for when network access begins or ceases.  This is using the
+class `CLNetworkUsageController`.  For example:
+
+    [[CLNetworkUsageController sharedController] setCallback:^(BOOL isAccessing)
+     {
+         NSLog(@"%@ using network.", isAccessing ? @"BEGIN" : @"END"); 
+     }];
+    
 Use
 ===
     

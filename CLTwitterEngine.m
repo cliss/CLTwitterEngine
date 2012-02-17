@@ -11,6 +11,7 @@
 #import "CLTweet.h"
 #import "CLDirectMessage.h"
 #import "CLTwitterEndpoints.h"
+#import "CLNetworkUsageController.h"
 
 @interface CLTwitterEngine ()
 - (NSArray *)getTweetsFromJSONData:(NSData *)data;
@@ -60,7 +61,9 @@
 {
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_TIMELINE_ENDPOINT]];
     [self authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error == nil)
         {
             handler([self getTweetsFromJSONData:data], error);
@@ -111,7 +114,9 @@
     // Get received DMs
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_DIRECT_MESSAGES_RECEIVED_ENDPOINT]];
     [self authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
@@ -136,7 +141,9 @@
     // Get sent DMs
     GTMHTTPFetcher *sentFetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_DIRECT_MESSAGES_SENT_ENDPOINT]];
     [self authorizeRequest:[sentFetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [sentFetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);

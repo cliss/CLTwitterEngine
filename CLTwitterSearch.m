@@ -11,6 +11,7 @@
 #import "CLTwitterEndpoints.h"
 #import "CLTweetJSONStrings.h"
 #import "CLTweet.h"
+#import "CLNetworkUsageController.h"
 #import "GTMHTTPFetcher.h"
 
 #pragma mark Private Category
@@ -79,7 +80,9 @@
                      CLTWITTER_GET_SEARCH_BASE_ENDPOINT, 
                      [query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);
@@ -99,7 +102,9 @@
 {
     NSLog(@"%@", [self olderUrl]);
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:[self olderUrl]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);
@@ -115,7 +120,9 @@
 - (void)getNewerSearchResultsWithCompletionHandler:(CLSearchResultsHandler)handler
 {
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:[self refreshUrl]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);

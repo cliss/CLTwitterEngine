@@ -12,6 +12,7 @@
 #import "CLTweetJSONStrings.h"
 #import "CLTwitterEndpoints.h"
 #import "CLTweetMedia.h"
+#import "CLNetworkUsageController.h"
 #import "GTMHTTPFetcher.h"
 
 
@@ -89,7 +90,9 @@
     NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_DIRECT_MESSAGE_BY_ID_ENDPOINT_FORMAT, messageId];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);

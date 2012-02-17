@@ -11,6 +11,7 @@
 #import "CLTwitterEndpoints.h"
 #import "GTMHTTPFetcher.h"
 #import "CLTwitterEngine.h"
+#import "CLNetworkUsageController.h"
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 
@@ -125,7 +126,9 @@
     NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_FOLLOWERS_ENDPOINT_FORMAT, cursorString, [self screenName]];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, nil, error);
@@ -160,7 +163,9 @@
     NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_FOLLOWING_ENDPOINT_FORMAT, cursorString, [self screenName]];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, nil, error);
@@ -193,7 +198,9 @@
     NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_BY_SCREEN_NAME_ENDPOINT_FORMAT, screenName];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:url]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);
@@ -210,7 +217,9 @@
     NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_BY_ID_ENDPOINT_FORMAT, userId];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:url]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);
@@ -227,7 +236,9 @@
     NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_USERS_BY_IDS_ENDPOINT_FORMAT, usersCsv];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);

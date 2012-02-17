@@ -10,6 +10,7 @@
 #import "CLTweetJSONStrings.h"
 #import "CLTwitterEndpoints.h"
 #import "CLTwitterEngine.h"
+#import "CLNetworkUsageController.h"
 #import "NSDictionary+UrlEncoding.h"
 #import "GTMHTTPFetcher.h"
 
@@ -61,7 +62,9 @@
     NSLog(@"URL: %@", [[fetcher mutableRequest] URL]);
     [[fetcher mutableRequest] setHTTPMethod:@"POST"];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         handler(error);
     }];
 }
@@ -73,7 +76,9 @@
 {
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:CLTWITTER_GET_SAVED_SEARCHES_ENDPOINT];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);
@@ -96,7 +101,9 @@
 {
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:[NSString stringWithFormat:CLTWITTER_GET_SAVED_SEARCH_ENDPOINT_FORMAT, searchId]];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);
@@ -118,7 +125,9 @@
     
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error)
         {
             handler(nil, error);

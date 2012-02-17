@@ -9,6 +9,7 @@
 #import "CLTweetMarker.h"
 #import "CLTwitterEngine.h"
 #import "CLTwitterEndpoints.h"
+#import "CLNetworkUsageController.h"
 #import "GTMHTTPFetcher.h"
 
 #define OAUTH_HEADER_FIELD @"Authorization"
@@ -21,7 +22,9 @@
 {
     NSString *url = [NSString stringWithFormat:CLTWEETMARKER_GET_LAST_READ_FORMAT, user, collection, key];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(nil, error);
@@ -57,7 +60,9 @@
     
     // Do it.
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         if (error != nil)
         {
             handler(NO, error);
