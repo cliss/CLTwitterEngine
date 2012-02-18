@@ -3,10 +3,11 @@
 //  Sedge
 //
 //  Created by Casey Liss on 6/2/12.
-//  Copyright (c) 2012 Ironworks Consulting. All rights reserved.
+//  Copyright (c) 2012 Casey Liss. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import "CLTwitterEngine.h"
 
 @class CLDirectMessage, CLTwitterUser, CLTweetMedia;
 
@@ -28,7 +29,9 @@ typedef void(^CLDirectMessageHandler)(CLDirectMessage *message, NSError *error);
 @property (readonly) NSNumber *messageId;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
+- (void)deleteMessageWithErrorHandler:(CLErrorHandler)handler;
 + (void)getDirectMessageWithId:(NSNumber *)messageId completionHandler:(CLDirectMessageHandler)handler;
++ (void)postDirectMessageToScreenName:(NSString *)screenName withBody:(NSString *)body completionHandler:(CLDirectMessageHandler)handler;
 
 @end
 

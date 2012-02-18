@@ -11,7 +11,6 @@
 
 @class CLTwitterUser;
 
-typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
 typedef void(^CLUserCursoredArrayHandler)(NSArray *users, NSNumber *nextBatchCursor, NSError *error);
 typedef void(^CLUserArrayHandler)(NSArray *users, NSError *error);
 

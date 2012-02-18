@@ -62,7 +62,7 @@
     if (_refCount)
     {
         --_refCount;
-        if (callback)
+        if (!_refCount && callback)
         {
             callback(NO);
         }

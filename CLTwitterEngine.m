@@ -7,11 +7,13 @@
 //
 
 #import "CLTwitterEngine.h"
-#import "GTMHTTPFetcher.h"
 #import "CLTweet.h"
 #import "CLDirectMessage.h"
 #import "CLTwitterEndpoints.h"
 #import "CLNetworkUsageController.h"
+#import "CLTweetJSONStrings.h"
+#import "GTMHTTPFetcher.h"
+#import "NSDictionary+UrlEncoding.h"
 
 @implementation CLTwitterEngine
 
@@ -196,6 +198,94 @@
             }
         }
     }];
+}
+
+// NOTE: THIS METHOD IS UNTESTED.
+- (void)getPendingFollowRequestsOfMeWithHandler:(CLArrayHandler)handler
+{
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:CLTWITTER_GET_PENDING_FOLLOW_REQUESTS_OF_ME_ENDPOINT];
+    [self authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSDictionary *dict = [self convertJSON:data];
+            handler([dict objectForKey:CLTWITTER_USER_LIST_IDS], error);
+        }
+    }];
+}
+
+// NOTE: THIS METHOD IS UNTESTED.
+- (void)getMyPendingFollowRequestsWithHandler:(CLArrayHandler)handler
+{
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:CLTWITTER_GET_MY_PENDING_FOLLOW_REQUESTS_ENDPOINT];
+    [self authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSDictionary *dict = [self convertJSON:data];
+            handler([dict objectForKey:CLTWITTER_USER_LIST_IDS], error);
+        }
+    }];
+}
+
+- (void)followUserWithScreenName:(NSString *)screenName handler:(CLUserHandler)handler
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:CLTWITTER_POST_START_FOLLOWING_USER_ENDPOINT]]; 
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
+    [request setHTTPMethod:@"POST"];
+    NSDictionary *form = [NSDictionary dictionaryWithObjectsAndKeys:
+                          screenName, CLTWITTER_USER_SCREEN_NAME, 
+                          nil];
+    [request setHTTPBody:[[form urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (!error)
+        {
+            NSDictionary *dict = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            handler([[CLTwitterUser alloc] initWithDictionary:dict], error);
+        }
+        else
+        {
+            handler(nil, error);
+        }
+    }];
+
+}
+
+- (void)stopFollowingUserWithScreenName:(NSString *)screenName errorHandler:(CLErrorHandler)handler
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:CLTWITTER_POST_STOP_FOLLOWING_USER_ENDPOINT]]; 
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
+    [request setHTTPMethod:@"POST"];
+    NSDictionary *form = [NSDictionary dictionaryWithObjectsAndKeys:
+                          screenName, CLTWITTER_USER_SCREEN_NAME, 
+                          nil];
+    [request setHTTPBody:[[form urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        handler(error);
+    }];
+    
 }
 
 @end

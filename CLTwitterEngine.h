@@ -8,10 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class CLTwitterUser;
+
 typedef void(^CLErrorHandler)(NSError *error);
 typedef id(^CLJSONConverter)(NSData *dataToConvert);
 typedef void(^CLConnectionAuthorizer)(NSMutableURLRequest *request);
 typedef void(^CLArrayHandler)(NSArray *array, NSError *error);
+typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
 
 @interface CLTwitterEngine : NSObject
 {
@@ -30,5 +33,9 @@ typedef void(^CLArrayHandler)(NSArray *array, NSError *error);
 - (void)getMentionsWithCompletionHandler:(CLArrayHandler)handler;
 - (void)getRetweetsOfMeWithCompletionHandler:(CLArrayHandler)handler;
 - (void)getRecentDirectMessagesWithCompletionHandler:(CLArrayHandler)handler;
+- (void)getPendingFollowRequestsOfMeWithHandler:(CLArrayHandler)handler;
+- (void)getMyPendingFollowRequestsWithHandler:(CLArrayHandler)handler;
+- (void)followUserWithScreenName:(NSString *)screenName handler:(CLUserHandler)handler;
+- (void)stopFollowingUserWithScreenName:(NSString *)screenName errorHandler:(CLErrorHandler)handler;
 
 @end

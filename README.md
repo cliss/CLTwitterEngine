@@ -47,17 +47,17 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ### Direct Messages
 ☑ Get messages to me<br />
 ☑ Get messages by me<br />
-☐ Delete a message<br />
-☐ Post a message<br />
+☑ Delete a message<br />
+☑ Post a message<br />
 ☑ Get single message<br />
 
 ### Followers
 ☑ Get my followers<br />
 ☑ Get my followees<br />
-☐ Get incoming follow requests<br />
-☐ Get outgoing follow requests<br />
-☐ Follow a user<br />
-☐ Unfollow a user<br />
+☑ Get incoming follow requests<br />
+☑ Get outgoing follow requests<br />
+☑ Follow a user<br />
+☑ Unfollow a user<br />
 
 ### Users
 ☑ Get users in bulk<br />
@@ -217,6 +217,22 @@ Or perhaps just an individual direct message:
             // The direct messages is provided.
         }
     }];
+    
+To send a direct message:
+
+    [CLDirectMessage postDirectMessageToScreenName:@"SedgeApp" 
+                                          withBody:@"This is a test DM." 
+                                 completionHandler:^(CLDirectMessage *message, NSError *error) {
+                                     if (error)
+                                     {
+                                         // Handle error.
+                                     }
+                                     else 
+                                     {
+                                         // New direct message is provided.
+                                     }
+                                 }];
+
 
 ##Users
 
@@ -245,6 +261,28 @@ You can get a user by handle/screen name:
                     // The user is provided.
                 }
     }];
+    
+To follow a user:
+
+    [[CLTwitterEngine sharedEngine] followUserWithScreenName:@"ironworkscandy" errorHandler:^(CLTwitterUser *user, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // The user is provided.
+        }
+    }];
+    
+To stop following a user:
+
+    [[CLTwitterEngine sharedEngine] stopFollowingUserWithScreenName:@"ironworkscandy" errorHandler:^(NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+    }]; 
     
 ##Search
 

@@ -24,6 +24,8 @@
 #define CLTWITTER_GET_DIRECT_MESSAGES_RECEIVED_ENDPOINT @"https://api.twitter.com/1/direct_messages.json?include_entities=true"
 #define CLTWITTER_GET_DIRECT_MESSAGES_SENT_ENDPOINT @"https://api.twitter.com/1/direct_messages/sent.json?include_entities=true"
 #define CLTWITTER_GET_DIRECT_MESSAGE_BY_ID_ENDPOINT_FORMAT @"https://api.twitter.com/1/direct_messages/show/%@.json?include_entities=true"
+#define CLTWITTER_POST_DELETE_DIRECT_MESSAGE_ENDPOINT_FORMAT @"https://api.twitter.com/1/direct_messages/destroy/%@.json"
+#define CLTWITTER_POST_DIRECT_MESSAGE_ENDPOINT @"https://api.twitter.com/1/direct_messages/new.json"
 
 #pragma mark -
 #pragma mark Users
@@ -32,6 +34,10 @@
 #define CLTWITTER_GET_USER_BY_SCREEN_NAME_ENDPOINT_FORMAT @"http://api.twitter.com/1/users/show.json?screen_name=%@&include_entities=true"
 #define CLTWITTER_GET_USER_BY_ID_ENDPOINT_FORMAT @"http://api.twitter.com/1/users/show.json?user_id=%@&include_entities=true"
 #define CLTWITTER_GET_USERS_BY_IDS_ENDPOINT_FORMAT @"https://api.twitter.com/1/users/lookup.json?user_id=%@&include_entities=true"
+#define CLTWITTER_GET_PENDING_FOLLOW_REQUESTS_OF_ME_ENDPOINT @"https://api.twitter.com/1/friendships/incoming.json"
+#define CLTWITTER_GET_MY_PENDING_FOLLOW_REQUESTS_ENDPOINT @"https://api.twitter.com/1/friendships/outgoing.json"
+#define CLTWITTER_POST_START_FOLLOWING_USER_ENDPOINT @"https://api.twitter.com/1/friendships/create.json"
+#define CLTWITTER_POST_STOP_FOLLOWING_USER_ENDPOINT @"http://api.twitter.com/1/friendships/destroy.json"
 
 #pragma mark -
 #pragma mark Search
