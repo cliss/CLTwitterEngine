@@ -18,6 +18,8 @@
 #define CLTWITTER_POST_RETWEET_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/retweet/%@.json"
 #define CLTWITTER_GET_RETWEETERS_OF_TWEET_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/%@/retweeted_by.json"
 #define CLTWITTER_GET_RETWEETS_OF_TWEET_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/retweets/21947795900469248.json?include_entities=true"
+#define CLTWITTER_POST_NEW_FAVORITE_ENDPOINT_FORMAT @"https://api.twitter.com/1/favorites/create/%@.json?include_entities=true"
+#define CLTWITTER_POST_REMOVE_FAVORITE_ENDPOINT_FORMAT @"https://api.twitter.com/1/favorites/destroy/%@.json"
 
 #pragma mark -
 #pragma mark Direct Messages
@@ -38,6 +40,10 @@
 #define CLTWITTER_GET_MY_PENDING_FOLLOW_REQUESTS_ENDPOINT @"https://api.twitter.com/1/friendships/outgoing.json"
 #define CLTWITTER_POST_START_FOLLOWING_USER_ENDPOINT @"https://api.twitter.com/1/friendships/create.json"
 #define CLTWITTER_POST_STOP_FOLLOWING_USER_ENDPOINT @"http://api.twitter.com/1/friendships/destroy.json"
+#define CLTWITTER_GET_USER_PROFILE_IMAGE_ENDPOINT_FORMAT @"https://api.twitter.com/1/users/profile_image?screen_name=%@&size=%@"
+#define CLTWITTER_GET_USER_SEARCH_RESULTS_ENDPOINT_FORMAT @"https://api.twitter.com/1/users/search.json?q=%@&page=%@"
+#define CLTWITTER_GET_USER_FAVORITES_ENDPOINT_FORMAT @"https://api.twitter.com/1/favorites/%@.json?page=%@"
+#define CLTWITTER_GET_MY_FAVORITES_ENDPOINT_FORMAT @"https://api.twitter.com/1/favorites.json?page=%@"
 
 #pragma mark -
 #pragma mark Search

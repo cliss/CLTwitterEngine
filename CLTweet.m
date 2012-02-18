@@ -208,6 +208,32 @@
     }];
 }
 
+- (void)markAsFavoriteWithErrorHandler:(CLErrorHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_POST_NEW_FAVORITE_ENDPOINT_FORMAT, [self tweetId]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[fetcher mutableRequest] setHTTPMethod:@"POST"];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        handler(error);
+    }];
+}
+
+- (void)removeAsFavoriteWithErrorHandler:(CLErrorHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_POST_REMOVE_FAVORITE_ENDPOINT_FORMAT, [self tweetId]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[fetcher mutableRequest] setHTTPMethod:@"POST"];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        handler(error);
+    }];
+}
+
 #pragma mark -
 #pragma mark Class Methods
 

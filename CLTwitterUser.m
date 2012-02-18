@@ -7,6 +7,7 @@
 //
 
 #import "CLTwitterUser.h"
+#import "CLTweet.h"
 #import "CLTweetJSONStrings.h"
 #import "CLTwitterEndpoints.h"
 #import "GTMHTTPFetcher.h"
@@ -208,6 +209,51 @@
     }];
 }
 
+- (void)getProfileImageForImageSize:(NSString *)imageSize completionHandler:(CLImageHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_PROFILE_IMAGE_ENDPOINT_FORMAT, [self screenName], imageSize];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            handler([[NSImage alloc] initWithData:data], error);
+        }
+    }];
+}
+
+- (void)getFavoritesPage:(NSNumber *)page withCompletionHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_FAVORITES_ENDPOINT_FORMAT, [self screenName], page];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSArray *array = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:[array count]];
+            
+            for (NSDictionary *dict in array)
+            {
+                [retVal addObject:[[CLTweet alloc] initWithDictionary:dict]];
+            }
+            
+            handler(retVal, error);
+        }
+    }];
+}
+
 #pragma mark -
 #pragma mark Class Methods
 
@@ -270,7 +316,7 @@
 + (void)getUsersWithIds:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler
 {
     NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_USERS_BY_IDS_ENDPOINT_FORMAT, usersCsv];
-    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:urlString]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:urlString];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
@@ -288,6 +334,31 @@
                 [retVal addObject:[[CLTwitterUser alloc] initWithDictionary:dictionary]];
             }
             handler(retVal, nil);
+        }
+    }];
+}
+
++ (void)searchForUserWithQuery:(NSString *)query page:(NSNumber *)page resultsHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_SEARCH_RESULTS_ENDPOINT_FORMAT, query, page];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSArray *array = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:[array count]];
+            for (NSDictionary *dictionary in array)
+            {
+                [retVal addObject:[[CLTwitterUser alloc] initWithDictionary:dictionary]];
+            }
+            handler(retVal, error);
         }
     }];
 }

@@ -13,6 +13,7 @@
 
 typedef void(^CLUserCursoredArrayHandler)(NSArray *users, NSNumber *nextBatchCursor, NSError *error);
 typedef void(^CLUserArrayHandler)(NSArray *users, NSError *error);
+typedef void(^CLImageHandler)(NSImage *image, NSError *error);
 
 @interface CLTwitterUser : NSObject
 {
@@ -37,10 +38,13 @@ typedef void(^CLUserArrayHandler)(NSArray *users, NSError *error);
 - (void)getTimelineWithHandler:(CLArrayHandler)handler;
 - (void)getFollowersAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
 - (void)getFollowingAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
+- (void)getProfileImageForImageSize:(NSString *)imageSize completionHandler:(CLImageHandler)handler;
+- (void)getFavoritesPage:(NSNumber *)page withCompletionHandler:(CLArrayHandler)handler;
 
 + (void)getCurrentUserWithCompletionHandler:(CLUserHandler)handler;
 + (void)getUserWithScreenName:(NSString *)screenName completionHandler:(CLUserHandler)handler;
 + (void)getUserWithId:(NSNumber *)userId completionHandler:(CLUserHandler)handler;
 + (void)getUsersWithIds:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler;
++ (void)searchForUserWithQuery:(NSString *)query page:(NSNumber *)page resultsHandler:(CLArrayHandler)handler;
 
 @end

@@ -288,4 +288,31 @@
     
 }
 
+- (void)getMyFavoritesPage:(NSNumber *)page withCompletionHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_MY_FAVORITES_ENDPOINT_FORMAT, page];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [self authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSArray *array = [self convertJSON:data];
+            NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:[array count]];
+            
+            for (NSDictionary *dict in array)
+            {
+                [retVal addObject:[[CLTweet alloc] initWithDictionary:dict]];
+            }
+            
+            handler(retVal, error);
+        }
+    }];
+}
+
 @end

@@ -61,14 +61,15 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 
 ### Users
 ☑ Get users in bulk<br />
-☐ Get a user's profile image<br />
-☐ Get search results for a user search<br />
+☑ Get a user's profile image<br />
+☑ Get search results for a user search<br />
 ☑ Get a user<br />
 
 ### Favorites
-☐ Get favorites<br />
-☐ Create a favorite<br />
-☐ Remove a favorite<br />
+☑ Get my favorites<br />
+☑ Get user's favorites<br />
+☑ Create a favorite<br />
+☑ Remove a favorite<br />
 
 ### Account
 ☐ Get rate limit status<br />
@@ -286,7 +287,7 @@ To stop following a user:
     
 ##Search
 
-Both regular searches and saved searches are supported.
+Regular searches, user searches, and saved searches are supported.
 
 ###Regular Searches
 
@@ -377,6 +378,79 @@ To delete a saved search:
             // Handle error.
         }
     }];
+    
+###User Searches
+
+To search for a user:
+
+    [CLTwitterUser searchForUserWithQuery:@"casey" page:0 resultsHandler:^(NSArray *array, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // array contains an array of CLTwitterUsers.
+        }
+    }];
+    
+##Favorites
+
+To get your own favorites:
+
+    [[CLTwitterEngine sharedEngine] getMyFavoritesPage:0 withCompletionHandler:^(NSArray *array, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // array contains an array of CLTweets.
+        }
+    }];
+    
+To get someone else's favorites:
+
+    CLTwitterUser *user; // Initialized elsewhere.
+    [user getFavoritesPage:0 withCompletionHandler:^(NSArray *array, NSError *innerError) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // array contains an array of CLTweets.
+        }
+    }];
+    
+To mark a tweet as a favorite:
+
+    CLTweet *tweet; // Initialized elsewhere.
+    [tweet markAsFavoriteWithErrorHandler:^(NSError *innerError) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Tweet was favorited.
+        }
+    }];
+    
+To remove a favorite:
+
+    CLTweet *tweet; // Initialized elsewhere.
+    [tweet removeAsFavoriteWithErrorHandler:^(NSError *innerError) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Tweet was un-favorited.
+        }
+    }];
+
     
 ##Configuration
 
