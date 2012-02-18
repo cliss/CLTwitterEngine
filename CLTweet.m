@@ -142,6 +142,72 @@
     }];
 }
 
+- (void)retweetWithCompletionHandler:(CLTweetHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_POST_RETWEET_ENDPOINT_FORMAT, [self tweetId]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[fetcher mutableRequest] setHTTPMethod:@"POST"];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else
+        {
+            handler([[CLTweet alloc] initWithJSONData:data], error);
+        }
+    }];
+}
+
+- (void)getRetweetersWithCompletionHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_RETWEETERS_OF_TWEET_ENDPOINT_FORMAT, [self tweetId]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSArray *users = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:[users count]];
+            for (NSDictionary *user in users)
+            {
+                [retVal addObject:[[CLTwitterUser alloc] initWithDictionary:user]];
+            }
+            
+            handler(retVal, error);
+        }
+    }];
+}
+
+
+- (void)getRetweetsWithCompletionHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_RETWEETS_OF_TWEET_ENDPOINT_FORMAT, [self tweetId]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            handler([[CLTwitterEngine sharedEngine] getTweetsFromJSONData:data], error);
+        }
+    }];
+}
+
 #pragma mark -
 #pragma mark Class Methods
 

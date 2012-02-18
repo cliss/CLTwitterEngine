@@ -25,7 +25,10 @@ typedef void(^CLArrayHandler)(NSArray *array, NSError *error);
 + (id)sharedEngine;
 - (id)convertJSON:(NSData *)data;
 - (void)authorizeRequest:(NSMutableURLRequest *)request;
+- (NSArray *)getTweetsFromJSONData:(NSData *)data;
 - (void)getTimeLineWithCompletionHandler:(CLArrayHandler)handler;
+- (void)getMentionsWithCompletionHandler:(CLArrayHandler)handler;
+- (void)getRetweetsOfMeWithCompletionHandler:(CLArrayHandler)handler;
 - (void)getRecentDirectMessagesWithCompletionHandler:(CLArrayHandler)handler;
 
 @end

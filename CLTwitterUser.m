@@ -10,7 +10,6 @@
 #import "CLTweetJSONStrings.h"
 #import "CLTwitterEndpoints.h"
 #import "GTMHTTPFetcher.h"
-#import "CLTwitterEngine.h"
 #import "CLNetworkUsageController.h"
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
@@ -115,6 +114,25 @@
 #pragma mark -
 #pragma mark Instance Methods
 
+- (void)getTimelineWithHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_TIMELINE_ENDPOINT_FORMAT, [self screenName]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error == nil)
+        {
+            handler([[CLTwitterEngine sharedEngine] getTweetsFromJSONData:data], error);
+        }
+        else
+        {
+            handler(nil, error);
+        }
+    }];
+}
+
 - (void)getFollowersAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
 {
     if (nil == cursor)
@@ -192,6 +210,24 @@
 
 #pragma mark -
 #pragma mark Class Methods
+
++ (void)getCurrentUserWithCompletionHandler:(CLUserHandler)handler
+{
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:CLTWITTER_VERIFY_CREDENTIALS];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error != nil)
+        {
+            handler(nil, error);
+        }
+        else
+        {
+            handler([[CLTwitterUser alloc] initWithJSONData:data], error);
+        }
+    }];
+}
 
 + (void)getUserWithScreenName:(NSString *)screenName completionHandler:(CLUserHandler)handler
 {

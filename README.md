@@ -22,17 +22,16 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 
 ### Timeline 
 ☑ Get home timeline<br />
-☐ Get mentions<br />
-☐ Get public timeline<br />
-☐ Get retweets of me<br />
-☐ Get user timeline<br />
+☑ Get mentions<br />
+☑ Get retweets of me<br />
+☑ Get user's timeline<br />
 
 ### Tweets
-☐ Get users whom retweeted a tweet<br />
-☐ Get retweets of a tweet<br />
+☑ Get users whom retweeted a tweet<br />
+☑ Get retweets of a tweet<br />
 ☑ Get single tweet<br />
 ☑ Delete tweet<br />
-☐ Post retweet of a tweet<br />
+☑ Post retweet of a tweet<br />
 ☑ Post tweet<br />
 ☑ Post tweet with an image<br />
 
@@ -158,6 +157,8 @@ Subsequent to initialization above, the engine is ready to use.  You can get the
             // The timeline is ready for use.  It is a NSArray of CLTweet objects.
         }
     }];
+    
+Note that the general approach is the same for `getMentionsWithCompletionHandler`.
     
 ##Posting Tweets
     

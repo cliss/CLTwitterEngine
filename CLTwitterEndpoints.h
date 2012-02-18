@@ -11,7 +11,13 @@
 #define CLTWITTER_GET_TWEET_BY_ID_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/show.json?id=%@&include_entities=true"
 #define CLTWITTER_POST_TWEET_ENDPOINT @"http://api.twitter.com/1/statuses/update.json"
 #define CLTWITTER_GET_TIMELINE_ENDPOINT @"http://api.twitter.com/1/statuses/home_timeline.json"
+#define CLTWITTER_GET_MENTIONS_ENDPOINT @"https://api.twitter.com/1/statuses/mentions.json?include_entities=true"
+#define CLTWITTER_GET_RETWEETS_OF_ME_ENDPOINT @"https://api.twitter.com/1/statuses/retweets_of_me.json?include_entities=true"
 #define CLTWITTER_POST_TWEET_WITH_MEDIA_ENDPOINT @"https://upload.twitter.com/1/statuses/update_with_media.json"
+#define CLTWITTER_GET_USER_TIMELINE_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=true&screen_name=%@"
+#define CLTWITTER_POST_RETWEET_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/retweet/%@.json"
+#define CLTWITTER_GET_RETWEETERS_OF_TWEET_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/%@/retweeted_by.json"
+#define CLTWITTER_GET_RETWEETS_OF_TWEET_ENDPOINT_FORMAT @"https://api.twitter.com/1/statuses/retweets/21947795900469248.json?include_entities=true"
 
 #pragma mark -
 #pragma mark Direct Messages

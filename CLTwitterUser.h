@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CLTwitterEngine.h"
 
 @class CLTwitterUser;
 
@@ -34,9 +35,11 @@ typedef void(^CLUserArrayHandler)(NSArray *users, NSError *error);
 @property (readonly) NSNumber *followerCount;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
+- (void)getTimelineWithHandler:(CLArrayHandler)handler;
 - (void)getFollowersAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
 - (void)getFollowingAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
 
++ (void)getCurrentUserWithCompletionHandler:(CLUserHandler)handler;
 + (void)getUserWithScreenName:(NSString *)screenName completionHandler:(CLUserHandler)handler;
 + (void)getUserWithId:(NSNumber *)userId completionHandler:(CLUserHandler)handler;
 + (void)getUsersWithIds:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler;

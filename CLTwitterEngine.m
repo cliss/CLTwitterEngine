@@ -13,10 +13,6 @@
 #import "CLTwitterEndpoints.h"
 #import "CLNetworkUsageController.h"
 
-@interface CLTwitterEngine ()
-- (NSArray *)getTweetsFromJSONData:(NSData *)data;
-@end
-
 @implementation CLTwitterEngine
 
 #pragma mark Properties
@@ -60,6 +56,42 @@
 - (void)getTimeLineWithCompletionHandler:(CLArrayHandler)handler
 {
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_TIMELINE_ENDPOINT]];
+    [self authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error == nil)
+        {
+            handler([self getTweetsFromJSONData:data], error);
+        }
+        else
+        {
+            handler(nil, error);
+        }
+    }];
+}
+
+- (void)getMentionsWithCompletionHandler:(CLArrayHandler)handler
+{
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_MENTIONS_ENDPOINT]];
+    [self authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error == nil)
+        {
+            handler([self getTweetsFromJSONData:data], error);
+        }
+        else
+        {
+            handler(nil, error);
+        }
+    }];
+}
+
+- (void)getRetweetsOfMeWithCompletionHandler:(CLArrayHandler)handler
+{
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:[NSURL URLWithString:CLTWITTER_GET_RETWEETS_OF_ME_ENDPOINT]];
     [self authorizeRequest:[fetcher mutableRequest]];
     [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
