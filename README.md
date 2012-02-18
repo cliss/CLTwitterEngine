@@ -87,7 +87,7 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ☐ Report spam<br />
 
 ### Help
-☐ Get configuration<br />
+☑ Get configuration<br />
 
 
 Requirements
@@ -336,6 +336,23 @@ To delete a saved search:
         if (error)
         {
             // Handle error.
+        }
+    }];
+    
+##Configuration
+
+To get the current Twitter configuration:
+
+    [CLTwitterConfiguration getTwitterConfigurationWithHandler:^(CLTwitterConfiguration *configuration, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else 
+        {
+            // Configuration is provided.  Note:
+            // [configuration photoSizes] is a dictionary of CLTwitterPhotoSizes
+            // [configuration nonUsernamePaths] is an array of NSStrings.
         }
     }];
 

@@ -49,3 +49,19 @@
 #define CLTWITTER_SEARCH_POSITION @"position"
 #define CLTWITTER_SEARCH_QUERY @"query"
 #define CLTWITTER_SEARCH_NAME @"name"
+
+#pragma mark -
+#pragma mark Photo Size
+#define CLTWITTER_PHOTO_SIZE_WIDTH @"w"
+#define CLTWITTER_PHOTO_SIZE_HEIGHT @"h"
+#define CLTWITTER_PHOTO_SIZE_RESIZE_KIND @"resize"
+
+#pragma mark -
+#pragma mark Miscellaneous
+#define CLTWITTER_CONFIGURATION_MEDIA_SHORT_URL_LENGTH @"characters_reserved_per_media"
+#define CLTWITTER_CONFIGURATION_NON_USERNAME_PATHS @"non_username_paths"
+#define CLTWITTER_CONFIGURATION_MAX_MEDIA_PER_UPLOAD @"max_media_per_upload"
+#define CLTWITTER_CONFIGURATION_PHOTO_SIZE_LIMIT @"photo_size_limit"
+#define CLTWITTER_CONFIGURATION_PHOTO_SIZES @"photo_sizes"
+#define CLTWITTER_CONFIGURATION_INSECURE_SHORT_URL_LENGTH @"short_url_length"
+#define CLTWITTER_CONFIGURATION_SECURE_SHORT_URL_LENGTH @"short_url_length_https"

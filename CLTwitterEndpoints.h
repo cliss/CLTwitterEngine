@@ -39,6 +39,7 @@
 #pragma mark -
 #pragma mark General
 #define CLTWITTER_VERIFY_CREDENTIALS @"https://api.twitter.com/1/account/verify_credentials.json"
+#define CLTWITTER_GET_CONFIGURATION @"https://api.twitter.com/1/help/configuration.json"
 
 #pragma mark -
 #pragma mark Tweet Marker
