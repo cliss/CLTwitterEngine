@@ -58,6 +58,18 @@
 #define CLTWITTER_PHOTO_SIZE_RESIZE_KIND @"resize"
 
 #pragma mark -
+#pragma mark Rate Limit
+#define CLTWITTER_RATE_REMAINING_HITS @"remaining_hits"
+#define CLTWITTER_RATE_RESET_TIME_SECONDS @"reset_time_in_seconds"
+#define CLTWITTER_RATE_HOURLY_LIMIT @"hourly_limit"
+#define CLTWITTER_RATE_RESET_DATE @"reset_time"
+#define CLTWITTER_RATE_PHOTO_LIMIT @"photos"
+#define CLTWITTER_RATE_PHOTO_REMAINING_HITS CLTWITTER_RATE_REMAINING_HITS
+#define CLTWITTER_RATE_PHOTO_RESET_TIME_SECONDS CLTWITTER_RATE_RESET_TIME_SECONDS
+#define CLTWITTER_RATE_PHOTO_RESET_DATE CLTWITTER_RATE_RESET_DATE
+#define CLTWITTER_RATE_PHOTO_DAILY_LIMIT @"daily_limit"
+
+#pragma mark -
 #pragma mark Miscellaneous
 #define CLTWITTER_CONFIGURATION_MEDIA_SHORT_URL_LENGTH @"characters_reserved_per_media"
 #define CLTWITTER_CONFIGURATION_NON_USERNAME_PATHS @"non_username_paths"

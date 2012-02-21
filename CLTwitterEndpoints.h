@@ -44,6 +44,7 @@
 #define CLTWITTER_GET_USER_SEARCH_RESULTS_ENDPOINT_FORMAT @"https://api.twitter.com/1/users/search.json?q=%@&page=%@"
 #define CLTWITTER_GET_USER_FAVORITES_ENDPOINT_FORMAT @"https://api.twitter.com/1/favorites/%@.json?page=%@"
 #define CLTWITTER_GET_MY_FAVORITES_ENDPOINT_FORMAT @"https://api.twitter.com/1/favorites.json?page=%@"
+#define CLTWITTER_POST_REPORT_SPAM_ENDPOINT_FORMAT @"http://api.twitter.com/1/report_spam.json?screen_name=%@"
 
 #pragma mark -
 #pragma mark Search
@@ -58,6 +59,7 @@
 #pragma mark General
 #define CLTWITTER_VERIFY_CREDENTIALS @"https://api.twitter.com/1/account/verify_credentials.json"
 #define CLTWITTER_GET_CONFIGURATION @"https://api.twitter.com/1/help/configuration.json"
+#define CLTWITTER_GET_RATE_LIMIT @"https://api.twitter.com/1/account/rate_limit_status.json"
 
 #pragma mark -
 #pragma mark Tweet Marker

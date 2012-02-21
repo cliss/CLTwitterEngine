@@ -74,7 +74,7 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ☑ Remove a favorite<br />
 
 ### Account
-☐ Get rate limit status<br />
+☑ Get rate limit status<br />
 ☐ Post update to account<br />
 ☐ Post update of profile image<br />
 ☐ Get account totals<br />
