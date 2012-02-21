@@ -42,6 +42,8 @@ typedef void(^CLTweetHandler)(CLTweet *tweet, NSError *error);
 - (void)getRetweetsWithCompletionHandler:(CLArrayHandler)handler;
 - (void)markAsFavoriteWithErrorHandler:(CLErrorHandler)handler;
 - (void)removeAsFavoriteWithErrorHandler:(CLErrorHandler)handler;
+- (void)postReply:(NSString *)text withCompletionHandler:(CLTweetHandler)handler;
+- (void)postreply:(NSString *)text withImage:(NSImage *)image completionHandler:(CLTweetHandler)handler;
 
 
 + (void)getTweetWithId:(NSNumber *)tweetId completionHandler:(CLTweetHandler)handler;

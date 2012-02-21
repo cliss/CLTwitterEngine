@@ -34,6 +34,8 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ☑ Post retweet of a tweet<br />
 ☑ Post tweet<br />
 ☑ Post tweet with an image<br />
+☑ Post tweet in reply to another tweet<br />
+☑ Post tweet with image in reply to another tweet<br />
 
 ### Search
 ☑ Get search results<br />
@@ -187,6 +189,35 @@ You can post a tweet with an image:
         {
             // The tweet and image have been posted; the result is provided for convenience.
         }
+    }];
+    
+To reply to a tweet, use the original tweet:
+
+    // Local variable: CLTweet *tweet
+    [tweet postReply:@"@sedgeapp this is an awesome tweet!" withCompletionHandler:^(CLTweet *tweet, NSError *innerError) {
+        if (error)
+        {
+            // Handle the error.
+        }
+        else
+        {
+            // The tweet has been posted; the result is provided for convenience.
+        }
+    }];
+    
+To reply to a tweet, including an image:
+
+    [CLTweet postTweet:@"This is a test image upload."
+             withImage:[[NSImage alloc] initWithContentsOfFile:@"/Users/casey/Desktop/v-tech.png"]
+     completionHandler:^(CLTweet *tweet, NSError *error) {
+         if (error)
+         {
+            // Handle the error.
+         }
+         else
+         {
+            // The tweet has been posted; the result is provided for convenience.
+         }
     }];
 
 ##Direct Messages
