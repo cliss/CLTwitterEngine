@@ -45,6 +45,8 @@
 #define CLTWITTER_GET_USER_FAVORITES_ENDPOINT_FORMAT @"https://api.twitter.com/1/favorites/%@.json?page=%@"
 #define CLTWITTER_GET_MY_FAVORITES_ENDPOINT_FORMAT @"https://api.twitter.com/1/favorites.json?page=%@"
 #define CLTWITTER_POST_REPORT_SPAM_ENDPOINT_FORMAT @"http://api.twitter.com/1/report_spam.json?screen_name=%@"
+#define CLTWITTER_GET_BLOCKED_USER_IDS_ENDPOINT @"https://api.twitter.com/1/blocks/blocking/ids.json"
+#define CLTWITTER_POST_BLOCK_USER_ENDPOINT @"https://api.twitter.com/1/blocks/create.json"
 
 #pragma mark -
 #pragma mark Search

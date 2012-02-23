@@ -10,8 +10,9 @@
 #import "CLTweet.h"
 #import "CLTweetJSONStrings.h"
 #import "CLTwitterEndpoints.h"
-#import "GTMHTTPFetcher.h"
 #import "CLNetworkUsageController.h"
+#import "NSDictionary+UrlEncoding.h"
+#import "GTMHTTPFetcher.h"
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 
@@ -157,7 +158,7 @@
             NSDictionary *dict = [[CLTwitterEngine sharedEngine] convertJSON:data];
             NSArray *list = [dict valueForKey:CLTWITTER_USER_LIST_IDS];
             NSString *csv = [[list subarrayWithRange:NSMakeRange(0, min([list count], 100))] componentsJoinedByString:@","];
-            [CLTwitterUser getUsersWithIds:csv completionHandler:^(NSArray *users, NSError *error) {
+            [CLTwitterUser getUsersWithIdsCsv:csv completionHandler:^(NSArray *users, NSError *error) {
                 if (error == nil)
                 {
                     handler(users, [dict objectForKey:CLTWITTER_USER_NEXT_CURSOR], nil);
@@ -195,7 +196,7 @@
             NSArray *list = [dict valueForKey:CLTWITTER_USER_LIST_IDS];
             
             NSString *csv = [[list subarrayWithRange:NSMakeRange(0, min([list count], 100))] componentsJoinedByString:@","];
-            [CLTwitterUser getUsersWithIds:csv completionHandler:^(NSArray *users, NSError *error) {
+            [CLTwitterUser getUsersWithIdsCsv:csv completionHandler:^(NSArray *users, NSError *error) {
                 if (error == nil)
                 {
                     handler(users, [dict objectForKey:CLTWITTER_USER_NEXT_CURSOR], nil);
@@ -251,6 +252,34 @@
             
             handler(retVal, error);
         }
+    }];
+}
+
+// NOTE: This method is untested.
+- (void)postReportSpamWithErrorHandler:(CLErrorHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_POST_REPORT_SPAM_ENDPOINT_FORMAT, [self screenName]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[fetcher mutableRequest] setHTTPMethod:@"POST"];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        handler(error);
+    }];
+}
+
+- (void)blockUserWithErrorHandler:(CLErrorHandler)handler
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:CLTWITTER_POST_BLOCK_USER_ENDPOINT]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
+    [request setHTTPBody:[[[NSDictionary dictionaryWithObjectsAndKeys:[self screenName], CLTWITTER_USER_SCREEN_NAME, nil] urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        handler(error);
     }];
 }
 
@@ -313,7 +342,19 @@
     }];
 }
 
-+ (void)getUsersWithIds:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler
++ (void)getUsersWithIds:(NSArray *)userIds completionHandler:(CLUserArrayHandler)handler
+{
+    if ([userIds count])
+    {
+        [CLTwitterUser getUsersWithIdsCsv:[userIds componentsJoinedByString:@","] completionHandler:handler];
+    }
+    else 
+    {
+        handler(userIds, nil);
+    }
+}
+
++ (void)getUsersWithIdsCsv:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler
 {
     NSString *urlString = [NSString stringWithFormat:CLTWITTER_GET_USERS_BY_IDS_ENDPOINT_FORMAT, usersCsv];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:urlString];

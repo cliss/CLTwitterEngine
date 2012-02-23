@@ -36,6 +36,7 @@ typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
 - (void)getPendingFollowRequestsOfMeWithHandler:(CLArrayHandler)handler;
 - (void)getMyPendingFollowRequestsWithHandler:(CLArrayHandler)handler;
 - (void)getMyFavoritesPage:(NSNumber *)page withCompletionHandler:(CLArrayHandler)handler;
+- (void)getBlockedUsersWithCompletionHandler:(CLArrayHandler)handler;
 - (void)followUserWithScreenName:(NSString *)screenName handler:(CLUserHandler)handler;
 - (void)stopFollowingUserWithScreenName:(NSString *)screenName errorHandler:(CLErrorHandler)handler;
 

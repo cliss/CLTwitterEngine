@@ -80,13 +80,13 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ☐ Get account totals<br />
 
 ### Block
-☐ Get all my blocked users<br />
+☑ Get all my blocked users<br />
 ☐ Get information about one block<br />
-☐ Create a new block<br />
+☑ Create a new block<br />
 ☐ Unblock a user<br />
 
 ### Spam
-☐ Report spam<br />
+☑ Report spam<br />
 
 ### Help
 ☑ Get configuration<br />
@@ -315,6 +315,30 @@ To stop following a user:
             // Handle error.
         }
     }]; 
+    
+To block a user:
+
+    // Local variable: CLTwitterUser *user;
+    [user blockUserWithErrorHandler:^(NSError *innerError) {
+        if (error)
+        {
+            // Handle error.
+        }
+    }];
+    
+To get a list of all the users that you've blocked:
+
+    [[CLTwitterEngine sharedEngine] getBlockedUsersWithCompletionHandler:^(NSArray *array, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else 
+        {
+            // The array contains CLTwitterUser objects.
+        }
+    }];
+
     
 ##Search
 

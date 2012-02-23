@@ -315,4 +315,22 @@
     }];
 }
 
+- (void)getBlockedUsersWithCompletionHandler:(CLArrayHandler)handler
+{
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:CLTWITTER_GET_BLOCKED_USER_IDS_ENDPOINT];
+    [self authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSArray *ids = [self convertJSON:data];
+            [CLTwitterUser getUsersWithIds:ids completionHandler:handler];
+        }
+    }];
+}
+
 @end

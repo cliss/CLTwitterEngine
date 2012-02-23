@@ -40,11 +40,14 @@ typedef void(^CLImageHandler)(NSImage *image, NSError *error);
 - (void)getFollowingAtCursorPosition:(NSNumber *)cursor completionHandler:(CLUserCursoredArrayHandler)handler;
 - (void)getProfileImageForImageSize:(NSString *)imageSize completionHandler:(CLImageHandler)handler;
 - (void)getFavoritesPage:(NSNumber *)page withCompletionHandler:(CLArrayHandler)handler;
+- (void)postReportSpamWithErrorHandler:(CLErrorHandler)handler;
+- (void)blockUserWithErrorHandler:(CLErrorHandler)handler;
 
 + (void)getCurrentUserWithCompletionHandler:(CLUserHandler)handler;
 + (void)getUserWithScreenName:(NSString *)screenName completionHandler:(CLUserHandler)handler;
 + (void)getUserWithId:(NSNumber *)userId completionHandler:(CLUserHandler)handler;
-+ (void)getUsersWithIds:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler;
++ (void)getUsersWithIds:(NSArray *)userIds completionHandler:(CLUserArrayHandler)handler;
++ (void)getUsersWithIdsCsv:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler;
 + (void)searchForUserWithQuery:(NSString *)query page:(NSNumber *)page resultsHandler:(CLArrayHandler)handler;
 
 @end
