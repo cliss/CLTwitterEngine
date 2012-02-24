@@ -14,6 +14,8 @@
 typedef void(^CLUserCursoredArrayHandler)(NSArray *users, NSNumber *nextBatchCursor, NSError *error);
 typedef void(^CLUserArrayHandler)(NSArray *users, NSError *error);
 typedef void(^CLImageHandler)(NSImage *image, NSError *error);
+typedef void(^CLUserBlockedHandler)(BOOL isBlocked);
+
 
 @interface CLTwitterUser : NSObject
 {
@@ -42,6 +44,7 @@ typedef void(^CLImageHandler)(NSImage *image, NSError *error);
 - (void)getFavoritesPage:(NSNumber *)page withCompletionHandler:(CLArrayHandler)handler;
 - (void)postReportSpamWithErrorHandler:(CLErrorHandler)handler;
 - (void)blockUserWithErrorHandler:(CLErrorHandler)handler;
+- (void)unblockUserWithErrorHandler:(CLErrorHandler)handler;
 
 + (void)getCurrentUserWithCompletionHandler:(CLUserHandler)handler;
 + (void)getUserWithScreenName:(NSString *)screenName completionHandler:(CLUserHandler)handler;
@@ -49,5 +52,6 @@ typedef void(^CLImageHandler)(NSImage *image, NSError *error);
 + (void)getUsersWithIds:(NSArray *)userIds completionHandler:(CLUserArrayHandler)handler;
 + (void)getUsersWithIdsCsv:(NSString *)usersCsv completionHandler:(CLUserArrayHandler)handler;
 + (void)searchForUserWithQuery:(NSString *)query page:(NSNumber *)page resultsHandler:(CLArrayHandler)handler;
++ (void)isUserBlocked:(NSString *)screenName completionHandler:(CLUserBlockedHandler)handler;
 
 @end

@@ -29,6 +29,7 @@
 #define CLTWITTER_USER_FOLLWING_COUNT @"friends_count"
 #define CLTWITTER_USER_LIST_IDS @"ids"
 #define CLTWITTER_USER_NEXT_CURSOR @"next_cursor"
+#define CLTWITTER_USER_NOT_BLOCKED @"error"
 
 #pragma mark -
 #pragma mark Direct Messages

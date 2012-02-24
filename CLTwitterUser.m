@@ -283,6 +283,21 @@
     }];
 }
 
+- (void)unblockUserWithErrorHandler:(CLErrorHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_DELETE_BLOCK_USER_ENDPOINT_FORMAT, [self screenName]];
+    NSLog(@"URL: %@", url);
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"DELETE"];
+
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        handler(error);
+    }];
+}
+
 #pragma mark -
 #pragma mark Class Methods
 
@@ -400,6 +415,26 @@
                 [retVal addObject:[[CLTwitterUser alloc] initWithDictionary:dictionary]];
             }
             handler(retVal, error);
+        }
+    }];
+}
+
++ (void)isUserBlocked:(NSString *)screenName completionHandler:(CLUserBlockedHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_IS_USER_BLOCKED_ENDPOINT_FORMAT, screenName];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(NO);
+        }
+        else
+        {
+            NSDictionary *dict = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            handler(![dict objectForKey:CLTWITTER_USER_NOT_BLOCKED]);
         }
     }];
 }

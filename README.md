@@ -81,9 +81,9 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 
 ### Block
 ☑ Get all my blocked users<br />
-☐ Get information about one block<br />
+☑ Am I blocking a user?<br />
 ☑ Create a new block<br />
-☐ Unblock a user<br />
+☑ Unblock a user<br />
 
 ### Spam
 ☑ Report spam<br />
@@ -326,6 +326,16 @@ To block a user:
         }
     }];
     
+To unblock a user:
+
+    // Local variable: CLTwitterUser *user;
+    [user unblockUserWithErrorHandler:^(NSError *innerError) {
+        if (error)
+        {
+            // Handle error.
+        }
+    }];
+    
 To get a list of all the users that you've blocked:
 
     [[CLTwitterEngine sharedEngine] getBlockedUsersWithCompletionHandler:^(NSArray *array, NSError *error) {
@@ -338,7 +348,12 @@ To get a list of all the users that you've blocked:
             // The array contains CLTwitterUser objects.
         }
     }];
+    
+To determine if a user is blocked or not:
 
+    [CLTwitterUser isUserBlocked:@"souzaliys1" completionHandler:^(BOOL isBlocked) {
+        // Take action
+    }];
     
 ##Search
 
