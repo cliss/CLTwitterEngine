@@ -77,7 +77,7 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ☑ Get rate limit status<br />
 ☐ Post update to account<br />
 ☐ Post update of profile image<br />
-☐ Get account totals<br />
+☑ Get account totals<br />
 
 ### Block
 ☑ Get all my blocked users<br />
