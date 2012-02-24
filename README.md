@@ -1,7 +1,7 @@
 CLTwitterEngine
 ===============
 
-A simple, ARC and blocks-based Twitter engine for Cocoa and CocoaTouch.  `CLTweetEngine` currently supports both [TweetMarker][tm] and Twitter's image upload service.
+A simple, ARC and blocks-based Twitter engine for Cocoa and CocoaTouch.  `CLTwitterEngine` currently supports both [TweetMarker][tm] and Twitter's image upload service.
 
 Basics
 ======
@@ -268,6 +268,10 @@ To send a direct message:
 
 ##Users
 
+User objects are arguably the primary entity in the Twitter world.  They are used in many ways.
+
+###Getting Users
+
 You can get a user by handle/screen name:
 
     [CLTwitterUser getUserWithScreenName:@"SedgeApp" completionHandler:^(CLTwitterUser *user, NSError *error) {
@@ -294,6 +298,8 @@ You can get a user by handle/screen name:
                 }
     }];
     
+###Following/Unfollowing
+    
 To follow a user:
 
     [[CLTwitterEngine sharedEngine] followUserWithScreenName:@"ironworkscandy" errorHandler:^(CLTwitterUser *user, NSError *error) {
@@ -315,6 +321,8 @@ To stop following a user:
             // Handle error.
         }
     }]; 
+    
+###Blocking
     
 To block a user:
 
@@ -353,6 +361,21 @@ To determine if a user is blocked or not:
 
     [CLTwitterUser isUserBlocked:@"souzaliys1" completionHandler:^(BOOL isBlocked) {
         // Take action
+    }];
+    
+###Your Own Statistics
+
+To get your own statistics:
+
+    [CLTwitterUserTotals getUserTotalsWithCompletionHandler:^(CLTwitterUserTotals *totals, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Totals are provided.
+        }
     }];
     
 ##Search

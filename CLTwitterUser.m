@@ -294,6 +294,7 @@
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [[CLNetworkUsageController sharedController] beginNetworkRequest];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
         handler(error);
     }];
 }

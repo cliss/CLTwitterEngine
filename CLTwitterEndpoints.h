@@ -49,6 +49,7 @@
 #define CLTWITTER_POST_BLOCK_USER_ENDPOINT @"https://api.twitter.com/1/blocks/create.json"
 #define CLTWITTER_GET_IS_USER_BLOCKED_ENDPOINT_FORMAT @"https://api.twitter.com/1/blocks/exists.json?screen_name=%@"
 #define CLTWITTER_DELETE_BLOCK_USER_ENDPOINT_FORMAT @"https://api.twitter.com/1/blocks/destroy.json?screen_name=%@&include_entities=true"
+#define CLTWITTER_GET_USER_TOTALS_ENDPOINT @"https://api.twitter.com/1/account/totals.json"
 
 #pragma mark -
 #pragma mark Search

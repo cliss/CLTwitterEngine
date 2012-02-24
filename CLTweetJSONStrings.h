@@ -79,3 +79,10 @@
 #define CLTWITTER_CONFIGURATION_PHOTO_SIZES @"photo_sizes"
 #define CLTWITTER_CONFIGURATION_INSECURE_SHORT_URL_LENGTH @"short_url_length"
 #define CLTWITTER_CONFIGURATION_SECURE_SHORT_URL_LENGTH @"short_url_length_https"
+
+#pragma mark -
+#pragma mark User Totals
+#define CLTWITTER_USER_TOTAL_FOLLOWING @"friends"
+#define CLTWITTER_USER_TOTAL_FOLLOWERS @"followers"
+#define CLTWITTER_USER_TOTAL_TWEETS @"updates"
+#define CLTWITTER_USER_TOTAL_FAVORITES @"favorites"
