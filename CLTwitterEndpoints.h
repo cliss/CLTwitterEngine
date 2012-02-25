@@ -65,6 +65,7 @@
 #define CLTWITTER_VERIFY_CREDENTIALS @"https://api.twitter.com/1/account/verify_credentials.json"
 #define CLTWITTER_GET_CONFIGURATION @"https://api.twitter.com/1/help/configuration.json"
 #define CLTWITTER_GET_RATE_LIMIT @"https://api.twitter.com/1/account/rate_limit_status.json"
+#define CLTWITTER_POST_PROFILE_UPDATE_ENDPOINT @"https://api.twitter.com/1/account/update_profile.json"
 
 #pragma mark -
 #pragma mark Tweet Marker

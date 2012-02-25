@@ -285,7 +285,6 @@
         [[CLNetworkUsageController sharedController] endNetworkRequest];
         handler(error);
     }];
-    
 }
 
 - (void)getMyFavoritesPage:(NSNumber *)page withCompletionHandler:(CLArrayHandler)handler
@@ -329,6 +328,53 @@
         {
             NSArray *ids = [self convertJSON:data];
             [CLTwitterUser getUsersWithIds:ids completionHandler:handler];
+        }
+    }];
+}
+
+- (void)updateProfileWithName:(NSString *)name 
+                          url:(NSURL *)url 
+                     location:(NSString *)location 
+                  description:(NSString *)description
+            completionHandler:(CLUserHandler)handler
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:CLTWITTER_POST_PROFILE_UPDATE_ENDPOINT]]; 
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
+    [request setHTTPMethod:@"POST"];
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"true", CLTWITTER_INCLUDE_ENTITIES, nil];
+    if (name)
+    {
+        [dict setValue:name forKey:CLTWITTER_USER_REAL_NAME];
+    }
+    if (url)
+    {
+        [dict setValue:[url absoluteString] forKey:CLTWITTER_USER_PERSONAL_URL];
+    }
+    if (location)
+    {
+        [dict setValue:location forKey:CLTWITTER_USER_LOCATION];
+    }
+    if (description)
+    {
+        [dict setValue:description forKey:CLTWITTER_USER_DESCRIPTION];
+    }
+    [request setHTTPBody:[[dict urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSDictionary *userDict = [self convertJSON:data];
+            handler([[CLTwitterUser alloc] initWithDictionary:userDict], error);
         }
     }];
 }

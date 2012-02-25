@@ -80,6 +80,7 @@
 #define CLTWITTER_CONFIGURATION_PHOTO_SIZES @"photo_sizes"
 #define CLTWITTER_CONFIGURATION_INSECURE_SHORT_URL_LENGTH @"short_url_length"
 #define CLTWITTER_CONFIGURATION_SECURE_SHORT_URL_LENGTH @"short_url_length_https"
+#define CLTWITTER_INCLUDE_ENTITIES @"include_entities"
 
 #pragma mark -
 #pragma mark User Totals

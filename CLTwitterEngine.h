@@ -39,5 +39,10 @@ typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
 - (void)getBlockedUsersWithCompletionHandler:(CLArrayHandler)handler;
 - (void)followUserWithScreenName:(NSString *)screenName handler:(CLUserHandler)handler;
 - (void)stopFollowingUserWithScreenName:(NSString *)screenName errorHandler:(CLErrorHandler)handler;
+- (void)updateProfileWithName:(NSString *)name 
+                          url:(NSURL *)url 
+                     location:(NSString *)location 
+                  description:(NSString *)description
+            completionHandler:(CLUserHandler)handler;
 
 @end

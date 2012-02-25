@@ -561,6 +561,24 @@ To get the current Twitter configuration:
             // [configuration nonUsernamePaths] is an array of NSStrings.
         }
     }];
+    
+To update your profile information:
+
+    [[CLTwitterEngine sharedEngine] updateProfileWithName:@"Sedge for OS X" 
+                                                     url:nil 
+                                                location:nil
+                                             description:nil
+                                       completionHandler:^(CLTwitterUser *user, NSError *error) {
+                                           if (error)
+                                           {
+                                               // Handle error.
+                                           }
+                                           else 
+                                           {
+                                               // Your own user object is provided for convenience.
+                                           }
+                                       }];
+
 
 
 TweetMarker
