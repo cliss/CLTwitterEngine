@@ -39,6 +39,11 @@
     return [self name] ? [self name] : [self screenName];
 }
 
+- (NSString *)bio
+{
+    return [_dictionary valueForKey:CLTWITTER_USER_DESCRIPTION];
+}
+
 - (NSURL *)profileImageURL
 {
     return [NSURL URLWithString:[_dictionary valueForKey:CLTWITTER_USER_PROFILE_IMAGE_URL]];
@@ -286,7 +291,6 @@
 - (void)unblockUserWithErrorHandler:(CLErrorHandler)handler
 {
     NSString *url = [NSString stringWithFormat:CLTWITTER_DELETE_BLOCK_USER_ENDPOINT_FORMAT, [self screenName]];
-    NSLog(@"URL: %@", url);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [request setHTTPMethod:@"DELETE"];
 

@@ -30,6 +30,7 @@
 #define CLTWITTER_USER_LIST_IDS @"ids"
 #define CLTWITTER_USER_NEXT_CURSOR @"next_cursor"
 #define CLTWITTER_USER_NOT_BLOCKED @"error"
+#define CLTWITTER_USER_DESCRIPTION @"description"
 
 #pragma mark -
 #pragma mark Direct Messages
