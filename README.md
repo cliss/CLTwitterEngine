@@ -75,7 +75,7 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 
 ### Account
 ☑ Get rate limit status<br />
-☐ Post update to account<br />
+☑ Post update to account<br />
 ☐ Post update of profile image<br />
 ☑ Get account totals<br />
 
@@ -621,6 +621,13 @@ To set the current marker in the timeline:
                          }
                      }];
     
+Thanks
+======
+`CLTwitterEngine` leverages:
+
+* [GTMHttpFetcher][fetcher]
+* [NSData+Base64][data]
+* [NSDictionary+UrlEncoding][dict]
     
 
 [fetcher]: http://code.google.com/p/gtm-http-fetcher/
@@ -629,3 +636,5 @@ To set the current marker in the timeline:
 [tm]: http://www.tweetmarker.net/
 [s]: http://twitter.com/SedgeApp/
 [mg]: https://github.com/mattgemmell/MGTwitterEngine
+[data]: http://cocoawithlove.com/2009/06/base64-encoding-options-on-mac-and.html
+[dict]: http://stackoverflow.com/questions/718429/creating-url-query-parameters-from-nsdictionary-objects-in-objectivec
