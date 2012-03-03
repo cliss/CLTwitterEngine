@@ -10,6 +10,7 @@
 #import "CLTweetJSONStrings.h"
 #import "CLTwitterEndpoints.h"
 #import "CLTwitterUser.h"
+#import "CLTweet.h"
 #import "CLNetworkUsageController.h"
 #import "GTMHTTPFetcher.h"
 
@@ -80,6 +81,40 @@
 }
 
 #pragma mark -
+#pragma mark Instance Methods
+
+- (void)getTimelineOnPage:(NSUInteger)page tweetsPerPage:(NSUInteger)pageLength completionHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_LIST_TIMELINE_ENDPOINT_FORMAT,
+                     [self listId],
+                     page,
+                     pageLength];
+    NSLog(@"%@", url);
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSArray *array = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:[array count]];
+            for (NSDictionary *dict in array)
+            {
+                CLTweet *tweet = [[CLTweet alloc] initWithDictionary:dict];
+                [retVal addObject:tweet];
+            }
+            
+            handler(retVal, error);
+        }
+    }];
+}
+
+#pragma mark -
 #pragma mark Class Methods
 
 + (void)getAllListsWithCompletionHandler:(CLArrayHandler)handler
@@ -130,6 +165,27 @@
                 [retVal addObject:list];
             }
             
+            handler(retVal, error);
+        }
+    }];
+}
+
++ (void)getListWithId:(NSNumber *)listId completionHandler:(CLTwitterListHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_LIST_BY_ID_ENDPOINT_FORMAT, listId];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSDictionary *dict = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            CLTwitterList *retVal = [[CLTwitterList alloc] initWithDictionary:dict];
             handler(retVal, error);
         }
     }];

@@ -55,6 +55,8 @@
 #pragma mark Lists
 #define CLTWITTER_GET_ALL_LISTS_ENDPOINT @"https://api.twitter.com/1/lists/all.json"
 #define CLTWITTER_GET_USER_LISTS_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/all.json?screen_name=%@"
+#define CLTWITTER_GET_LIST_TIMELINE_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/statuses.json?list_id=%@&page=%ul&per_page=%ul&include_entities=true"
+#define CLTWITTER_GET_LIST_BY_ID_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/show.json?list_id=%@"
 
 #pragma mark -
 #pragma mark Search

@@ -10,6 +10,9 @@
 #import "CLTwitterEngine.h"
 
 @class CLTwitterUser;
+@class CLTwitterList;
+
+typedef void(^CLTwitterListHandler)(CLTwitterList *list, NSError *error);
 
 @interface CLTwitterList : NSObject
 {
@@ -28,8 +31,10 @@
 @property (readonly) CLTwitterUser *user;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
+- (void)getTimelineOnPage:(NSUInteger)page tweetsPerPage:(NSUInteger)pageLength completionHandler:(CLArrayHandler)handler;
 
 + (void)getAllListsWithCompletionHandler:(CLArrayHandler)handler;
 + (void)getListsForUser:(NSString *)userName withCompletionHandler:(CLArrayHandler)handler;
++ (void)getListWithId:(NSNumber *)listId completionHandler:(CLTwitterListHandler)handler;
 
 @end

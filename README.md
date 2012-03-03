@@ -91,6 +91,21 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ### Help
 ☑ Get configuration<br />
 
+### Lists
+☑ Get all your lists
+☑ Get a user's lists
+☑ Get a list by ID
+☐ Add a user to a list
+☐ Remove a user from a list
+☐ Subscribe to a list
+☐ Unsubscribe from a list
+☐ Is a user subscribed to a list?
+☐ Get list members
+☐ Create a list
+☐ Delete a list
+☐ Update a list
+☐ Get a user's list subscriptions
+
 
 Requirements
 ============
@@ -512,7 +527,7 @@ To get someone else's favorites:
         }
         else
         {
-            // array contains an array of CLTweets.
+            // Array contains an array of CLTweets.
         }
     }];
     
@@ -541,6 +556,60 @@ To remove a favorite:
         else
         {
             // Tweet was un-favorited.
+        }
+    }];
+    
+##Lists
+
+To get all of your lists:
+
+    [CLTwitterList getAllListsWithCompletionHandler:^(NSArray *array, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Array contains an array of CLTwitterList objects.
+        }
+    }];
+    
+To get all of a user's lists:
+
+    [CLTwitterList getListsForUser:@"sedgeapp" withCompletionHandler:^(NSArray *array, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else
+        {
+            // Array contains an array of CLTwitterList objects.
+        }
+    }];
+    
+To get a specific list:
+
+    [CLTwitterList getListWithId:[NSNumber numberWithInt:46780714] completionHandler:^(CLTwitterList *list, NSError *error) {
+        if (error)
+        {
+            // Handle error.
+        }
+        else 
+        {
+            // List is provided.
+        }
+    }];     
+
+To get the timeline (the tweets) for a list:
+
+    [list getTimelineOnPage:1 tweetsPerPage:25 completionHandler:^(NSArray *array, NSError *innerError) {
+        if (innerError)
+        {
+            // Handle error.
+        }
+        else 
+        {
+            // Array contains an array of CLTweet objects.
         }
     }];
 
