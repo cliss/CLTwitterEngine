@@ -52,6 +52,11 @@
 #define CLTWITTER_GET_USER_TOTALS_ENDPOINT @"https://api.twitter.com/1/account/totals.json"
 
 #pragma mark -
+#pragma mark Lists
+#define CLTWITTER_GET_ALL_LISTS_ENDPOINT @"https://api.twitter.com/1/lists/all.json"
+#define CLTWITTER_GET_USER_LISTS_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/all.json?screen_name=%@"
+
+#pragma mark -
 #pragma mark Search
 #define CLTWITTER_GET_SEARCH_BASE_ENDPOINT @"http://search.twitter.com/search.json"
 #define CLTWITTER_GET_SEARCH_ENDPOINT_FORMAT @"%@?q=%@&include_entities=true&result_type=recent&rpp=100"
