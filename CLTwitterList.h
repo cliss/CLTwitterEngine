@@ -32,6 +32,10 @@ typedef void(^CLTwitterListHandler)(CLTwitterList *list, NSError *error);
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)getTimelineOnPage:(NSUInteger)page tweetsPerPage:(NSUInteger)pageLength completionHandler:(CLArrayHandler)handler;
+- (void)getListMembersWithCompletionHandler:(CLArrayHandler)handler;
+- (void)subscribeWithErrorHandler:(CLErrorHandler)handler;
+- (void)unsubscribeWithErrorHandler:(CLErrorHandler)handler;
+- (void)getSubscribersWithCompletionHandler:(CLArrayHandler)handler;
 
 + (void)getAllListsWithCompletionHandler:(CLArrayHandler)handler;
 + (void)getListsForUser:(NSString *)userName withCompletionHandler:(CLArrayHandler)handler;

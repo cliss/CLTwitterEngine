@@ -57,6 +57,10 @@
 #define CLTWITTER_GET_USER_LISTS_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/all.json?screen_name=%@"
 #define CLTWITTER_GET_LIST_TIMELINE_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/statuses.json?list_id=%@&page=%ul&per_page=%ul&include_entities=true"
 #define CLTWITTER_GET_LIST_BY_ID_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/show.json?list_id=%@"
+#define CLTWITTER_GET_LIST_MEMBERS_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/members.json?list_id=%@&cursor=-1"
+#define CLTWITTER_POST_LIST_SUBSCRIBE_ENDPOINT @"https://api.twitter.com/1/lists/subscribers/create.json"
+#define CLTWITTER_POST_LIST_UNSUBSCRIBE_ENDPOINT @"https://api.twitter.com/1/lists/subscribers/destroy.json"
+#define CLTWITTER_GET_LIST_SUBSCRIBERS_ENDPOINT_FORMAT @"https://api.twitter.com/1/lists/subscribers.json?include_entities=true&skip_status=true&list_id=%@"
 
 #pragma mark -
 #pragma mark Search

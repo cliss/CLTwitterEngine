@@ -13,6 +13,11 @@
 #import "CLTweet.h"
 #import "CLNetworkUsageController.h"
 #import "GTMHTTPFetcher.h"
+#import "NSDictionary+UrlEncoding.h"
+
+@interface CLTwitterList ()
+- (void)postSubscriptionChangeToUrl:(NSString *)url errorHandler:(CLErrorHandler)handler;
+@end
 
 @implementation CLTwitterList
 
@@ -33,12 +38,12 @@
 
 - (NSNumber *)subscribers
 {
-    return [_dictionary objectForKey:CLTWITTER_LIST_SUBSCRIBERS];
+    return [_dictionary objectForKey:CLTWITTER_LIST_SUBSCRIBERS_COUNT];
 }
 
 - (NSNumber *)members
 {
-    return [_dictionary objectForKey:CLTWITTER_LIST_MEMBERS];
+    return [_dictionary objectForKey:CLTWITTER_LIST_MEMBERS_COUNT];
 }
 
 - (NSString *)mode
@@ -89,7 +94,6 @@
                      [self listId],
                      page,
                      pageLength];
-    NSLog(@"%@", url);
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
     [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
     [[CLNetworkUsageController sharedController] beginNetworkRequest];
@@ -110,6 +114,92 @@
             }
             
             handler(retVal, error);
+        }
+    }];
+}
+
+- (void)getListMembersWithCompletionHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_LIST_MEMBERS_ENDPOINT_FORMAT, [self listId]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSDictionary *dict = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            NSArray *array = [dict objectForKey:CLTWITTER_LIST_MEMBERS];
+            NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:[array count]];
+            for (NSDictionary *dict in array)
+            {
+                CLTwitterUser *user = [[CLTwitterUser alloc] initWithDictionary:dict];
+                [retVal addObject:user];
+            }
+            
+            handler(retVal, error);
+        }
+    }];
+}
+
+- (void)subscribeWithErrorHandler:(CLErrorHandler)handler
+{
+    [self postSubscriptionChangeToUrl:CLTWITTER_POST_LIST_SUBSCRIBE_ENDPOINT errorHandler:handler];
+}
+
+- (void)unsubscribeWithErrorHandler:(CLErrorHandler)handler
+{
+    [self postSubscriptionChangeToUrl:CLTWITTER_POST_LIST_UNSUBSCRIBE_ENDPOINT errorHandler:handler];
+}
+
+- (void)postSubscriptionChangeToUrl:(NSString *)url errorHandler:(CLErrorHandler)handler
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]]; 
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
+    [request setHTTPMethod:@"POST"];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            [self listId], CLTWITTER_LIST_ID_WHEN_POSTING, 
+                            nil];
+    [request setHTTPBody:[[params urlEncodedString] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        handler(error);
+    }];
+}
+
+- (void)getSubscribersWithCompletionHandler:(CLArrayHandler)handler
+{
+    NSString *url = [NSString stringWithFormat:CLTWITTER_GET_LIST_SUBSCRIBERS_ENDPOINT_FORMAT, [self listId]];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:url];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        if (error)
+        {
+            handler(nil, error);
+        }
+        else 
+        {
+            NSDictionary *dict = [[CLTwitterEngine sharedEngine] convertJSON:data];
+            NSArray *array = [dict valueForKey:CLTWITTER_LIST_SUBSCRIBERS];
+            NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:[array count]];
+            for (NSDictionary *userDict in array)
+            {
+                CLTwitterUser *user = [[CLTwitterUser alloc] initWithDictionary:userDict];
+                [retVal addObject:user];
+            }
+            
+            handler(retVal, nil);
         }
     }];
 }

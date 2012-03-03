@@ -95,12 +95,12 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ☑ Get all your lists
 ☑ Get a user's lists
 ☑ Get a list by ID
+☑ Subscribe to a list
+☑ Unsubscribe from a list
+☑ Get list members
+☑ Get list subscribers
 ☐ Add a user to a list
 ☐ Remove a user from a list
-☐ Subscribe to a list
-☐ Unsubscribe from a list
-☐ Is a user subscribed to a list?
-☐ Get list members
 ☐ Create a list
 ☐ Delete a list
 ☐ Update a list
@@ -570,7 +570,7 @@ To get all of your lists:
         }
         else
         {
-            // Array contains an array of CLTwitterList objects.
+            // Array contains CLTwitterList objects.
         }
     }];
     
@@ -609,10 +609,51 @@ To get the timeline (the tweets) for a list:
         }
         else 
         {
-            // Array contains an array of CLTweet objects.
+            // Array contains CLTweet objects.
         }
     }];
+    
+To get all the members of a list:
 
+    CLTwitterList *list; // Initialized somewhere
+    [list getListMembersWithCompletionHandler:^(NSArray *array, NSError *innerError) {
+        if (innerError)
+        {
+            // Handle error.
+        }
+        else 
+        {
+            // Array contains CLTwitterUser objects.
+        }
+    }];
+    
+To get the users whom subscribe to a list:
+
+    CLTwitterList *list; // Inititalized somewhere
+    [list getSubscribersWithCompletionHandler:^(NSArray *array, NSError *innerError) {
+        if (innerError)
+        {
+            // Handle error.
+        }
+        else 
+        {
+            // Array contains CLTwitterUser objects.
+        }
+    }];
+    
+To subscribe to a list:
+
+    CLTwitterList *list; // Initialized somewhere
+    [list subscribeWithErrorHandler:^(NSError *innerError) {
+        // Handle error.
+    }];
+
+To unsubscribe from a list:
+
+    CLTwitterList *list; // Initialized somewhere
+    [list unsubscribeWithErrorHandler:^(NSError *innerError) {
+        // Handle error.
+    }];
     
 ##Configuration
 
