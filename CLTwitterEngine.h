@@ -44,5 +44,6 @@ typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
                      location:(NSString *)location 
                   description:(NSString *)description
             completionHandler:(CLUserHandler)handler;
+- (void)updateProfileImage:(NSImage *)image withErrorHandler:(CLErrorHandler)handler;
 
 @end

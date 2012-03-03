@@ -379,4 +379,52 @@
     }];
 }
 
+- (void)updateProfileImage:(NSImage *)image withErrorHandler:(CLErrorHandler)handler
+{
+    NSMutableData *data = [NSMutableData new];
+    // Inline method to add headers to the data.
+    void(^addHeader)(NSDictionary *headers) = ^(NSDictionary *headers)
+    {
+        for (NSString *key in headers)
+        {
+            [data appendData:[[NSString stringWithFormat:@"%@: %@\r\n", key, [headers objectForKey:key]] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+        [data appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    };
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:CLTWITTER_POST_PROFILE_IMAGE_UPDATE_ENDPOINT]];
+    
+    NSString *boundary = [[NSProcessInfo processInfo] globallyUniqueString];
+    // Image
+    NSBitmapImageRep *imageRep = [[image representations] objectAtIndex:0];
+    NSData *imageData = [imageRep representationUsingType:NSPNGFileType properties:nil];
+    NSDictionary *imageHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"form-data; name=\"image\"; filename=\"./image.png\"", @"Content-Disposition",
+                                  @"application/octet-stream", @"Content-Type",
+                                  //@"base64", @"Content-Transfer-Encoding",
+                                  nil];
+    
+    // Top boundary
+    [data appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    // Image
+    addHeader(imageHeaders);
+    [data appendData:imageData];
+    [data appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    // Final boundary
+    [data appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary] forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%d", [data length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody:data];
+    [request setHTTPMethod:@"POST"];
+    
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [[CLTwitterEngine sharedEngine] authorizeRequest:[fetcher mutableRequest]];
+    [[CLNetworkUsageController sharedController] beginNetworkRequest];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        [[CLNetworkUsageController sharedController] endNetworkRequest];
+        handler(error);
+    }];
+}
+
 @end

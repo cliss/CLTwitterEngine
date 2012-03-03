@@ -76,7 +76,7 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ### Account
 ☑ Get rate limit status<br />
 ☑ Post update to account<br />
-☐ Post update of profile image<br />
+☑ Post update of profile image<br />
 ☑ Get account totals<br />
 
 ### Block
@@ -578,6 +578,17 @@ To update your profile information:
                                                // Your own user object is provided for convenience.
                                            }
                                        }];
+    
+To update your profile picture:
+
+    [[CLTwitterEngine sharedEngine] updateProfileImage:[[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:@"http://a1.twimg.com/sticky/default_profile_images/default_profile_6_normal.png"]]
+                                      withErrorHandler:^(NSError *error) {
+                                          if (error)
+                                          {
+                                              // Handle error.
+                                          }
+                                      }];
+
 
 
 
