@@ -99,12 +99,12 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ☑ Unsubscribe from a list
 ☑ Get list members
 ☑ Get list subscribers
-☐ Add a user to a list
-☐ Remove a user from a list
-☐ Create a list
-☐ Delete a list
-☐ Update a list
-☐ Get a user's list subscriptions
+☑ Add a user to a list
+☑ Remove a user from a list
+☑ Create a list
+☑ Delete a list
+☑ Update a list
+☑ Get a user's list subscriptions
 
 
 Requirements
@@ -654,6 +654,87 @@ To unsubscribe from a list:
     [list unsubscribeWithErrorHandler:^(NSError *innerError) {
         // Handle error.
     }];
+    
+To create a list:
+
+    [CLTwitterList createListWithName:@"Test List"
+                          description:@"This is a test list."
+                            isPrivate:NO
+                    completionHandler:^(CLTwitterList *list, NSError *error) {
+                        if (error)
+                        {
+                            // Handle error.
+                        }
+                        else 
+                        {
+                            // Newly created list provided for convenience
+                        }
+    }];
+    
+To update a list, include the one or more parameters you wish to update:
+
+    CLTwitterList *list; // Initialized somewhere
+    [list updateListWithName:nil 
+                 description:@"This is a sweet test list." 
+                   isPrivate:NO 
+                errorHandler:^(NSError *innerError) {
+                if (error)
+                {
+                    // Handle error
+                }
+    }];
+    
+To delete a list:
+
+    CLTwitterList *list; // Initialized somewhere
+    [list deleteListWithErrorHandler:^(NSError *error) {
+        if (error)
+        {
+            // Handle error
+        }
+        else 
+        {
+            // List is deleted.
+        }
+    }];
+    
+To add a member to one of your lists:
+
+    CLTwitterList *list; // Initialized somewhere
+    [list addMember:@"caseyliss" errorHandler:^(NSError *innerError) {
+        if (error)
+        {
+            // Handle error
+        }
+    }];
+
+To remove a member from one of your lists:
+
+    CLTwitterList *list; // Initialized somewhere
+    [list removeMember:@"caseyliss" errorHandler:^(NSError *innerError) {
+        if (error)
+        {
+            // Handle error
+        }
+    }];
+    
+To get all the lists a user subscribes to:
+
+    [CLTwitterList getUsersListSubscriptionsForUser:@"caseyliss" 
+                                             cursor:nil 
+                                       countPerPage:[NSNumber numberWithInt:100]
+                                  completionHandler:^(NSNumber *previousCursor, NSNumber *nextCursor, NSArray *array, NSError *error) {
+                                      if (error)
+                                      {
+                                          // Handle error.
+                                      }
+                                      else 
+                                      {
+                                          // Previous & next cursors are provided.
+                                          // Array contains CLTwitterList objects.
+                                      }
+                                  }];
+
     
 ##Configuration
 

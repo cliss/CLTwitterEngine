@@ -57,6 +57,12 @@
 #define CLTWITTER_LIST_MEMBERS @"users"
 #define CLTWITTER_LIST_ID_WHEN_POSTING @"list_id"
 #define CLTWITTER_LIST_SUBSCRIBERS CLTWITTER_LIST_MEMBERS
+#define CLTWITTER_LIST_IS_PRIVATE @"private"
+#define CLTWITTER_LIST_IS_PUBLIC @"public"
+#define CLTWITTER_LIST_MEMBER CLTWITTER_USER_SCREEN_NAME
+#define CLTWITTER_LIST_PREVIOUS_CURSOR @"previous_cursor"
+#define CLTWITTER_LIST_NEXT_CURSOR @"next_cursor"
+#define CLTWITTER_LIST_LISTS @"lists"
 
 #pragma mark -
 #pragma mark Search

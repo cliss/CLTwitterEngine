@@ -13,6 +13,7 @@
 @class CLTwitterList;
 
 typedef void(^CLTwitterListHandler)(CLTwitterList *list, NSError *error);
+typedef void(^CLCursoredArrayHandler)(NSNumber *previousCursor, NSNumber *nextCursor, NSArray *array, NSError *error);
 
 @interface CLTwitterList : NSObject
 {
@@ -36,9 +37,24 @@ typedef void(^CLTwitterListHandler)(CLTwitterList *list, NSError *error);
 - (void)subscribeWithErrorHandler:(CLErrorHandler)handler;
 - (void)unsubscribeWithErrorHandler:(CLErrorHandler)handler;
 - (void)getSubscribersWithCompletionHandler:(CLArrayHandler)handler;
+- (void)updateListWithName:(NSString *)name 
+               description:(NSString *)description 
+                 isPrivate:(BOOL)privacyOn 
+              errorHandler:(CLErrorHandler)handler;
+- (void)addMember:(NSString *)screenName errorHandler:(CLErrorHandler)handler;
+- (void)removeMember:(NSString *)screenName errorHandler:(CLErrorHandler)handler;
+- (void)deleteListWithErrorHandler:(CLErrorHandler)handler;
 
 + (void)getAllListsWithCompletionHandler:(CLArrayHandler)handler;
 + (void)getListsForUser:(NSString *)userName withCompletionHandler:(CLArrayHandler)handler;
 + (void)getListWithId:(NSNumber *)listId completionHandler:(CLTwitterListHandler)handler;
++ (void)createListWithName:(NSString *)name 
+               description:(NSString *)description 
+                 isPrivate:(BOOL)privacyOn 
+         completionHandler:(CLTwitterListHandler)handler;
++ (void)getUsersListSubscriptionsForUser:(NSString *)screenName 
+                                  cursor:(NSNumber *)cursor 
+                            countPerPage:(NSNumber *)count
+                       completionHandler:(CLCursoredArrayHandler)handler;
 
 @end
