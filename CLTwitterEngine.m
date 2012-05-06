@@ -6,14 +6,18 @@
 //  Copyright (c) 2012 Casey Liss. All rights reserved.
 //
 
+#import <objc/objc-runtime.h>
 #import "CLTwitterEngine.h"
 #import "CLTweet.h"
 #import "CLDirectMessage.h"
 #import "CLTwitterEndpoints.h"
 #import "CLNetworkUsageController.h"
 #import "CLTweetJSONStrings.h"
+#import "CLTwitterEvent.h"
+#import "CLTwitterEntity.h"
 #import "GTMHTTPFetcher.h"
 #import "NSDictionary+UrlEncoding.h"
+#import "NSURLConnection+Blocks.h"
 
 @implementation CLTwitterEngine
 
@@ -37,6 +41,41 @@
     dispatch_once(&dispatch, ^{ engine = [[self alloc] init]; });
     
     return engine;
+}
+
++ (id)createTwitterObject:(id)parsedJSON
+{
+    Class *classes = NULL;
+    // Figure out how many classes we have
+    int numClasses = objc_getClassList(NULL, 0);
+    
+    if (numClasses > 0)
+    {
+        classes = (__unsafe_unretained Class *)malloc(sizeof(Class) * numClasses);
+        numClasses = objc_getClassList(classes, numClasses);
+
+        Class<CLTwitterEntity> entityClass = nil;
+        // Parse each class
+        for (int i = 0; i < numClasses; ++i)
+        {
+            Class c = classes[i];
+
+            if (class_conformsToProtocol(c, @protocol(CLTwitterEntity)))
+            {
+                // See if this class is the right class
+                entityClass = c;
+                if ([entityClass isThisEntity:parsedJSON])
+                {
+                    // Return it
+                    return [[c alloc] initWithDictionary:parsedJSON];
+                }
+            }
+        }
+        
+        free(classes);
+    }
+    
+    return nil;
 }
 
 #pragma mark -
@@ -425,6 +464,37 @@
         [[CLNetworkUsageController sharedController] endNetworkRequest];
         handler(error);
     }];
+}
+
+#pragma mark -
+#pragma mark Streaming
+
+- (void)startStreamingWithTweetHandler:(CLTwitterEntityHandler)handler
+{
+    if (_streamingConnection != nil)
+    {
+        return;
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://userstream.twitter.com/2/user.json"]];
+    [self authorizeRequest:request];
+    _streamingConnection = [[NSURLConnection alloc] initWithRequest:request
+                                                       dataReceiver:^(NSData *data) {
+                                                           if ([data length] > 2)
+                                                           {
+                                                               id json = [self convertJSON:data];
+                                                               id entity = [CLTwitterEngine createTwitterObject:json];
+                                                                                                                              
+                                                               if (entity != nil)
+                                                               {
+                                                                   handler(entity);
+                                                               }
+                                                           }
+                                                       } 
+                                                       erorrHandler:^(NSError *error) {
+                                                           
+                                                       }];
+    [_streamingConnection start];
 }
 
 @end

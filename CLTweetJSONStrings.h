@@ -14,6 +14,7 @@
 #define CLTWITTER_TWEET_MEDIA @"entities"
 #define CLTWITTER_TWEET_RETWEETED_TWEET @"retweeted_status"
 #define CLTWITTER_TWEET_NEW_MEDIA @"media[]"
+#define CLTWITTER_TWEET_IS_FAVORITED @"favorited"
 
 #pragma mark -
 #pragma mark Users
@@ -110,3 +111,16 @@
 #define CLTWITTER_USER_TOTAL_FOLLOWERS @"followers"
 #define CLTWITTER_USER_TOTAL_TWEETS @"updates"
 #define CLTWITTER_USER_TOTAL_FAVORITES @"favorites"
+
+#pragma mark -
+#pragma mark Event
+#define CLTWITTER_EVENT_EVENTTYPE @"event"
+#define CLTWITTER_EVENT_SOURCE @"source"
+#define CLTWITTER_EVENT_TARGET @"target"
+#define CLTWITTER_EVENT_EVENTTYPE_FAVORITE @"favorite"
+#define CLTWITTER_EVENT_EVENTTYPE_UNFAVORITE @"unfavorite"
+#define CLTWITTER_EVENT_EVENTTYPE_BLOCK @"block"
+#define CLTWITTER_EVENT_EVENTTYPE_FRIEND @"follow"
+#define CLTWITTER_EVENT_EVENTTYPE_RETWEET @"retweet"
+#define CLTWITTER_EVENT_EVENTTYPE_LIST @"list"
+#define CLTWITTER_EVENT_EVENTTYPE_PROFILE @"profile"

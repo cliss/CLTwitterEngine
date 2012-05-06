@@ -9,13 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "CLTwitterUser.h"
 #import "CLTwitterEngine.h"
+#import "CLTwitterEntity.h"
 
 @class CLTweet;
 @class CLTweetMedia;
 
 typedef void(^CLTweetHandler)(CLTweet *tweet, NSError *error);
 
-@interface CLTweet : NSObject
+@interface CLTweet : NSObject <CLTwitterEntity>
 {
     NSDictionary *_dictionary;
     CLTweetMedia *_media;

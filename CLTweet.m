@@ -97,6 +97,14 @@
 }
 
 #pragma mark -
+#pragma mark Class Methods
+
++ (BOOL)isThisEntity:(id)parsedJSON
+{
+    return [parsedJSON objectForKey:CLTWITTER_TWEET_IS_FAVORITED] != nil;
+}
+
+#pragma mark -
 #pragma mark Initialization
 
 - (id)initWithJSONData:(NSData *)data

@@ -15,10 +15,11 @@ typedef id(^CLJSONConverter)(NSData *dataToConvert);
 typedef void(^CLConnectionAuthorizer)(NSMutableURLRequest *request);
 typedef void(^CLArrayHandler)(NSArray *array, NSError *error);
 typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
+typedef void(^CLTwitterEntityHandler)(id entity);
 
 @interface CLTwitterEngine : NSObject
 {
-    
+    NSURLConnection *_streamingConnection;
 }
 
 @property (nonatomic, copy) CLJSONConverter converter;
@@ -26,6 +27,7 @@ typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
 @property (readonly) BOOL isReady;
 
 + (id)sharedEngine;
++ (id)createTwitterObject:(id)parsedJSON;
 - (id)convertJSON:(NSData *)data;
 - (void)authorizeRequest:(NSMutableURLRequest *)request;
 - (NSArray *)getTweetsFromJSONData:(NSData *)data;
@@ -45,5 +47,6 @@ typedef void(^CLUserHandler)(CLTwitterUser *user, NSError *error);
                   description:(NSString *)description
             completionHandler:(CLUserHandler)handler;
 - (void)updateProfileImage:(NSImage *)image withErrorHandler:(CLErrorHandler)handler;
+- (void)startStreamingWithTweetHandler:(CLTwitterEntityHandler)handler;
 
 @end

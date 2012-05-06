@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CLTwitterEngine.h"
+#import "CLTwitterEntity.h"
 
 @class CLTwitterUser;
 
@@ -17,7 +18,7 @@ typedef void(^CLImageHandler)(NSImage *image, NSError *error);
 typedef void(^CLUserBlockedHandler)(BOOL isBlocked);
 
 
-@interface CLTwitterUser : NSObject
+@interface CLTwitterUser : NSObject <CLTwitterEntity>
 {
     NSDictionary *_dictionary;
 }

@@ -119,6 +119,14 @@
 }
 
 #pragma mark -
+#pragma mark Class Methods
+
++ (BOOL)isThisEntity:(id)parsedJSON
+{
+    return [parsedJSON objectForKey:CLTWITTER_USER_FOLLOWERS_COUNT] != nil;
+}
+
+#pragma mark -
 #pragma mark Instance Methods
 
 - (void)getTimelineWithHandler:(CLArrayHandler)handler
