@@ -18,6 +18,7 @@
 #import "GTMHTTPFetcher.h"
 #import "NSDictionary+UrlEncoding.h"
 #import "NSURLConnection+Blocks.h"
+#import "CLReflection.h"
 
 @implementation CLTwitterEngine
 
@@ -45,37 +46,19 @@
 
 + (id)createTwitterObject:(id)parsedJSON
 {
-    Class *classes = NULL;
-    // Figure out how many classes we have
-    int numClasses = objc_getClassList(NULL, 0);
+    __block id retVal = nil;
     
-    if (numClasses > 0)
-    {
-        classes = (__unsafe_unretained Class *)malloc(sizeof(Class) * numClasses);
-        numClasses = objc_getClassList(classes, numClasses);
+    [CLReflection forClassesConformingToProtocol:@protocol(CLTwitterEntity)
+                                   performAction:^(id item) {
+                                       Class c = (Class)item;
+                                       if (retVal == nil && [c isThisEntity:parsedJSON])
+                                       {
+                                           retVal = [[c alloc] initWithDictionary:parsedJSON];
+                                       }
+                                   }];
 
-        Class<CLTwitterEntity> entityClass = nil;
-        // Parse each class
-        for (int i = 0; i < numClasses; ++i)
-        {
-            Class c = classes[i];
-
-            if (class_conformsToProtocol(c, @protocol(CLTwitterEntity)))
-            {
-                // See if this class is the right class
-                entityClass = c;
-                if ([entityClass isThisEntity:parsedJSON])
-                {
-                    // Return it
-                    return [[c alloc] initWithDictionary:parsedJSON];
-                }
-            }
-        }
-        
-        free(classes);
-    }
+    return retVal;
     
-    return nil;
 }
 
 #pragma mark -
