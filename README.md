@@ -1,7 +1,7 @@
 CLTwitterEngine
 ===============
 
-A simple, ARC and blocks-based Twitter engine for Cocoa and CocoaTouch.  `CLTwitterEngine` currently supports both [TweetMarker][tm] and Twitter's image upload service.
+A simple, ARC and blocks-based Twitter engine for Cocoa and CocoaTouch.  `CLTwitterEngine` currently supports both [TweetMarker][tm] and Twitter's image upload service.  There is also very basic support for Twitter's [user stream][us]; this portion is under development.
 
 Basics
 ======
@@ -92,19 +92,19 @@ At some point, the entire Twitter API may be covered.  However, the below are th
 ☑ Get configuration<br />
 
 ### Lists
-☑ Get all your lists
-☑ Get a user's lists
-☑ Get a list by ID
-☑ Subscribe to a list
-☑ Unsubscribe from a list
-☑ Get list members
-☑ Get list subscribers
-☑ Add a user to a list
-☑ Remove a user from a list
-☑ Create a list
-☑ Delete a list
-☑ Update a list
-☑ Get a user's list subscriptions
+☑ Get all your lists<br />
+☑ Get a user's lists<br />
+☑ Get a list by ID<br />
+☑ Subscribe to a list<br />
+☑ Unsubscribe from a list<br />
+☑ Get list members<br />
+☑ Get list subscribers<br />
+☑ Add a user to a list<br />
+☑ Remove a user from a list<br />
+☑ Create a list<br />
+☑ Delete a list<br />
+☑ Update a list<br />
+☑ Get a user's list subscriptions<br />
 
 
 Requirements
@@ -832,6 +832,7 @@ Thanks
 * [NSDictionary+UrlEncoding][dict]
     
 
+[us]: https://dev.twitter.com/docs/streaming-api/user-streams
 [fetcher]: http://code.google.com/p/gtm-http-fetcher/
 [JSON]: https://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html
 [OAuth]: http://code.google.com/p/gtm-oauth/
