@@ -130,6 +130,11 @@
 #pragma mark -
 #pragma mark Instance Methods
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"@%@: %@", [[self user] name], [self text]];
+}
+
 - (void)getTweetRepliedToWithCompletionHandler:(CLTweetHandler)handler
 {
     if ([self isReply])

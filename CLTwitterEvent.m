@@ -9,13 +9,12 @@
 #import "CLTwitterEvent.h"
 #import "CLTweetJSONStrings.h"
 #import "CLTwitterEngine.h"
+#import "CLTweet.h"
 
 @implementation CLTwitterEvent
 
 - (id)target
 {
-    id temp = [_dictionary objectForKey:CLTWITTER_EVENT_TARGET];
-    NSLog(@"%@", temp);
     return [CLTwitterEngine createTwitterObject:[_dictionary objectForKey:CLTWITTER_EVENT_TARGET]];
 }
 
@@ -74,6 +73,24 @@
     }
     
     return self;
+}
+
+- (NSString *)description
+{
+    switch ([self eventType])
+    {
+        case CLTwitterEventTypeFavorite:
+            return [NSString stringWithFormat:@"%@ favorited the tweet: %@", [[self source] name], [[self target] text]];
+            break;
+        case CLTwitterEventTypeUnfavorite:
+            return [NSString stringWithFormat:@"%@ unfavorited the tweet: %@", [[self source] name], [[self target] text]];
+            break;
+        case CLTwitterEventTypeFriend:
+            return [NSString stringWithFormat:@"%@ is now following you.", [[self source] name]];
+            break;
+        default:
+            return [NSString stringWithFormat:@"Event type: %i\nSource: %@\nTarget: %@", [self eventType], [self source], [self target]];
+    };
 }
 
 @end

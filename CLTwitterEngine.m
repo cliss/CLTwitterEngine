@@ -459,7 +459,7 @@
         return;
     }
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://userstream.twitter.com/2/user.json"]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:CLTWITTER_STREAMING_ENDPOINT]];
     [self authorizeRequest:request];
     _streamingConnection = [[NSURLConnection alloc] initWithRequest:request
                                                        dataReceiver:^(NSData *data) {
@@ -471,6 +471,10 @@
                                                                if (entity != nil)
                                                                {
                                                                    handler(entity);
+                                                               }
+                                                               else
+                                                               {
+                                                                   NSLog(@"CANNOT HANDLE JSON:\n%@", json);
                                                                }
                                                            }
                                                        } 

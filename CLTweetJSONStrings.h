@@ -104,6 +104,7 @@
 #define CLTWITTER_CONFIGURATION_INSECURE_SHORT_URL_LENGTH @"short_url_length"
 #define CLTWITTER_CONFIGURATION_SECURE_SHORT_URL_LENGTH @"short_url_length_https"
 #define CLTWITTER_INCLUDE_ENTITIES @"include_entities"
+#define CLTWITTER_OBJECT_TYPE_DIRECT_MESSAGE @"direct_message"
 
 #pragma mark -
 #pragma mark User Totals
@@ -116,7 +117,7 @@
 #pragma mark Event
 #define CLTWITTER_EVENT_EVENTTYPE @"event"
 #define CLTWITTER_EVENT_SOURCE @"source"
-#define CLTWITTER_EVENT_TARGET @"target"
+#define CLTWITTER_EVENT_TARGET @"target_object"
 #define CLTWITTER_EVENT_EVENTTYPE_FAVORITE @"favorite"
 #define CLTWITTER_EVENT_EVENTTYPE_UNFAVORITE @"unfavorite"
 #define CLTWITTER_EVENT_EVENTTYPE_BLOCK @"block"

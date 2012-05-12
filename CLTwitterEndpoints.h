@@ -84,6 +84,7 @@
 #define CLTWITTER_GET_RATE_LIMIT @"https://api.twitter.com/1/account/rate_limit_status.json"
 #define CLTWITTER_POST_PROFILE_UPDATE_ENDPOINT @"https://api.twitter.com/1/account/update_profile.json"
 #define CLTWITTER_POST_PROFILE_IMAGE_UPDATE_ENDPOINT @"http://api.twitter.com/1/account/update_profile_image.json"
+#define CLTWITTER_STREAMING_ENDPOINT @"https://userstream.twitter.com/2/user.json"
 
 #pragma mark -
 #pragma mark Tweet Marker

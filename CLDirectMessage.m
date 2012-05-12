@@ -76,7 +76,16 @@
 {
     if (self = [super init])
     {
-        _dictionary = dictionary;
+        // When using streaming, the dictionary received has only one key; the value
+        // of that key contains the standard DM dictionary.
+        if ([dictionary count] == 1 && [dictionary valueForKey:CLTWITTER_OBJECT_TYPE_DIRECT_MESSAGE] != nil)
+        {
+            _dictionary = [dictionary valueForKey:CLTWITTER_OBJECT_TYPE_DIRECT_MESSAGE];
+        }
+        else 
+        {
+            _dictionary = dictionary;
+        }
     }
     
     return self;
@@ -84,6 +93,11 @@
 
 #pragma mark -
 #pragma mark Instance Methods
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"Direct message from %@", [self sender]];
+}
 
 - (void)deleteMessageWithErrorHandler:(CLErrorHandler)handler
 {
@@ -150,6 +164,14 @@
             handler(nil, error);
         }
     }];
+}
+
+#pragma mark -
+#pragma mark CLTwitterEntity Messages
+
++ (BOOL)isThisEntity:(id)parsedJSON
+{
+    return [parsedJSON valueForKey:CLTWITTER_OBJECT_TYPE_DIRECT_MESSAGE] != nil;
 }
 
 @end

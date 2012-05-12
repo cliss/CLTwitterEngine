@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "CLTwitterEngine.h"
+#import "CLTwitterEntity.h"
 
 @class CLDirectMessage, CLTwitterUser, CLTweetMedia;
 
 typedef void(^CLDirectMessageHandler)(CLDirectMessage *message, NSError *error);
 
-@interface CLDirectMessage : NSObject
+@interface CLDirectMessage : NSObject <CLTwitterEntity>
 {
     NSDictionary *_dictionary;
     CLTweetMedia *_media;

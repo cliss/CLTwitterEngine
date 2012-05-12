@@ -129,6 +129,11 @@
 #pragma mark -
 #pragma mark Instance Methods
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@ (@%@)", [self name], [self screenName]];
+}
+
 - (void)getTimelineWithHandler:(CLArrayHandler)handler
 {
     NSString *url = [NSString stringWithFormat:CLTWITTER_GET_USER_TIMELINE_ENDPOINT_FORMAT, [self screenName]];
