@@ -62,7 +62,10 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    NSLog(@"Did receive %lu bytes of data.", [data length]);
+//    if ([data length] > 2)
+//    {
+//        NSLog(@"Did receive %lu bytes of data.", [data length]);
+//    }
     //NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     //NSLog(@"Received: %@", string);
     _receiver(data);

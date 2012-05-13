@@ -132,7 +132,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"@%@: %@", [[self user] name], [self text]];
+    return [NSString stringWithFormat:@"%@: %@", [[self user] name], [self text]];
 }
 
 - (void)getTweetRepliedToWithCompletionHandler:(CLTweetHandler)handler

@@ -177,7 +177,29 @@ Subsequent to initialization above, the engine is ready to use.  You can get the
     }];
     
 Note that the general approach is the same for `getMentionsWithCompletionHandler`.
+
+Using the streaming API
+=======================
+Also note that user streams are supported in a limited fashion.  Currently working:
+
+* New tweets
+* Favorites
+* Deleted tweets
+* Received direct messages
+
+Twitter sends various entities across the pipe when streaming is enabled.  For example, when a new tweet is received, it will send that tweet via the streaming connection.  However, in some instances, such as a new favorite, it will send an event.  In the case of things such as tweets, a `CLTweet` object will be passed along.  In the case of an event, a `CLTwitterEvent` object will be passed.
+
+To engage streaming:
+
+    [[CLTwitterEngine sharedEngine] startStreamingWithTweetHandler:^(id entity) {
+                NSLog(@"Got an entity: %@", entity);
+            }];
+            
+As discussed above, an entity will be passed on, that conforms to the protocol `CLTwitterEntity`.
     
+Using the non-streaming API
+===========================
+
 ##Posting Tweets
     
 You can post a text-only tweet:
