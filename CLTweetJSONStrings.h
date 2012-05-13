@@ -18,6 +18,7 @@
 
 #pragma mark -
 #pragma mark Users
+#define CLTWITTER_USER_ID @"user_id"
 #define CLTWITTER_USER_REAL_NAME @"name"
 #define CLTWITTER_USER_SCREEN_NAME @"screen_name"
 #define CLTWITTER_USER_PROFILE_IMAGE_URL @"profile_image_url_https"
@@ -105,6 +106,8 @@
 #define CLTWITTER_CONFIGURATION_SECURE_SHORT_URL_LENGTH @"short_url_length_https"
 #define CLTWITTER_INCLUDE_ENTITIES @"include_entities"
 #define CLTWITTER_OBJECT_TYPE_DIRECT_MESSAGE @"direct_message"
+#define CLTWITTER_OBJECT_TYPE_DELETED_TWEET @"delete"
+#define CLTWITTER_NESTED_OBJECT_STATUS @"status"
 
 #pragma mark -
 #pragma mark User Totals
