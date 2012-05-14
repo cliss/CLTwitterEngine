@@ -107,6 +107,7 @@
 #define CLTWITTER_INCLUDE_ENTITIES @"include_entities"
 #define CLTWITTER_OBJECT_TYPE_DIRECT_MESSAGE @"direct_message"
 #define CLTWITTER_OBJECT_TYPE_DELETED_TWEET @"delete"
+#define CLTWITTER_OBJECT_TYPE_FRIENDS @"friends"
 #define CLTWITTER_NESTED_OBJECT_STATUS @"status"
 
 #pragma mark -
